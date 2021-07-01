@@ -4,7 +4,7 @@ export interface IMovesProps {
 	moves: number
 }
 
-export default function Moves (props: IMovesProps) {
+const Moves: React.FC<IMovesProps> = (props: IMovesProps) => {
 	const {moves} = props;
 	return (
 		<div>
@@ -12,3 +12,5 @@ export default function Moves (props: IMovesProps) {
 		</div>
 	);
 }
+
+export default Moves;
