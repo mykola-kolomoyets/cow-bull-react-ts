@@ -1,11 +1,24 @@
 import * as React from 'react';
 
-const App = () => {
-  return (
-    <>
-      <h1>Hello world</h1>
-    </>
-  );
+interface IAppState {
+  moves: number
+  currentNumber: number
+  gameData: {
+    cows: number
+    bulls: number
+  }
+  incorrectNumbers: number[]
+  warnings: string[]
+};
+
+class App extends React.Component<IAppState> {
+  render() {
+    return (
+      <>
+        <h1>Cow-Bull-game</h1>
+      </>
+    )
+  }
 }
 
 export default App;
