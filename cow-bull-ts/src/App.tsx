@@ -12,7 +12,9 @@ interface IAppState {
   warnings: string[]
 };
 
-class App extends React.Component {
+class App extends React.Component<{},{}> {
+  
+  
   state: IAppState = {
     moves: 0,
     currentNumber: null,
@@ -23,10 +25,10 @@ class App extends React.Component {
     incorrectNumbers: [],
     warnings: []
   }
+  
 
   componentDidMount() {
     this.generateNumber();
-
   }
 
   generateNumber() {
@@ -35,7 +37,7 @@ class App extends React.Component {
 
     for (let i = 0; i < 4; i++) {
       let index = Math.floor(Math.random() * digits.length);
-      index = (i === 0 && index === 0) ? index + 1 : 0;
+      if (i === 0 && index === 0) index++;
       arr.push(digits[index]);
       digits.splice(index, 1);
     }
@@ -52,6 +54,9 @@ class App extends React.Component {
         <h1>Cow-Bull game</h1>
         <h3>React+Typescript version</h3>
         <Moves moves={this.state.moves}/>
+        <p>{this.state.currentNumber}</p>
+        <p>{this.state.incorrectNumbers}</p>
+        <button onClick={() => this.generateNumber()}>click me</button>
       </>
     )
   }

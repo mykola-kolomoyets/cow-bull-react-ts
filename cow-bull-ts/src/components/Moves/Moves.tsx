@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React, {FC} from 'react';
 
 export interface IMovesProps {
 	moves: number
 }
 
-const Moves: React.FC<IMovesProps> = (props: IMovesProps) => {
+const Moves: FC<IMovesProps> = (props: IMovesProps) => {
 	const {moves} = props;
 	return (
 		<div>
