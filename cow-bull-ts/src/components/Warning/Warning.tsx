@@ -5,7 +5,7 @@ interface IWarningProps {
 }
 
 
-const Warning: FC<IWarningProps> = (props) => {
+const Warning: FC<IWarningProps> = (props: IWarningProps) => {
 	return (
 		<>
 			<p>{props.text}</p>
