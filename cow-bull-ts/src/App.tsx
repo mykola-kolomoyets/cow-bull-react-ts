@@ -1,9 +1,11 @@
 import * as React from 'react';
 import Moves from './components/Moves/Moves';
+import NumInput from './components/NumInput/NumInput';
 
 interface IAppState {
   moves: number
-  currentNumber: number | null
+  currentNumber: number | undefined
+  enteredNumber: number | undefined
   gameData: {
     cows: number
     bulls: number
@@ -13,11 +15,10 @@ interface IAppState {
 };
 
 class App extends React.Component<{},{}> {
-  
-  
   state: IAppState = {
     moves: 0,
-    currentNumber: null,
+    currentNumber: undefined,
+    enteredNumber: undefined,
     gameData: {
       cows: 0,
       bulls: 0
@@ -31,7 +32,13 @@ class App extends React.Component<{},{}> {
     this.generateNumber();
   }
 
-  generateNumber() {
+  handleCallBack = (childData: number | undefined) => {
+    this.setState({
+      enteredNumber: childData
+    });
+  }
+
+  generateNumber = (): void => {
     let digits: number[] = [0,1,2,3,4,5,6,7,8,9];
     let arr: number[] = [];
 
@@ -45,8 +52,9 @@ class App extends React.Component<{},{}> {
     this.setState({
       currentNumber: +(arr.join('')),
       incorrectNumbers: digits
-    })
+    });
   }
+
 
   render() {
     return (
@@ -54,9 +62,11 @@ class App extends React.Component<{},{}> {
         <h1>Cow-Bull game</h1>
         <h3>React+Typescript version</h3>
         <Moves moves={this.state.moves}/>
-        <p>{this.state.currentNumber}</p>
-        <p>{this.state.incorrectNumbers}</p>
-        <button onClick={() => this.generateNumber()}>click me</button>
+        {/* <button onClick={() => this.generateNumber()}>click me</button> */}
+        <NumInput parentCallBack={this.handleCallBack}/>
+        <button onClick={(e) => {
+          e.preventDefault();
+        }}>Check the number</button>
       </>
     )
   }

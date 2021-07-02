@@ -8,7 +8,7 @@ const Moves: FC<IMovesProps> = (props: IMovesProps) => {
 	const {moves} = props;
 	return (
 		<div>
-			<p>Your moves: {moves}</p>
+			<h3>Your moves: {moves}</h3>
 		</div>
 	);
 }
