@@ -2,6 +2,10 @@ import * as React from 'react';
 import Moves from './components/Moves/Moves';
 import NumInput from './components/NumInput/NumInput';
 import WarningsContainer from './components/Warning/WarningsContainer';
+import CowBulls from './components/CowBulls/CowBulls';
+
+// TODO 1: refactor the form submission
+
 
 interface IAppState {
   moves: number
@@ -63,7 +67,7 @@ class App extends React.Component<{}, {}> {
     // [1] -> has repeated digits
     const criterias: boolean[] = [false, false];
     const warningsTexts: string[] = [];
-    console.log(this.state.enteredNumber);
+    console.log(this.state.enteredNumber, this.state.currentNumber);
 
     if (this.state.enteredNumber < 1000 ||
       this.state.enteredNumber > 10000) {
@@ -84,30 +88,49 @@ class App extends React.Component<{}, {}> {
         warnings: []
       });
       if (this.state.currentNumber === this.state.enteredNumber) {
-        // here will be win condition
+        this.restartGame();
       } else {
         const currNumArr = this.state.currentNumber.toString().split('');
         const inpNumArr = this.state.enteredNumber.toString().split('');
-
+        let cows = 0, bulls = 0;
         for (let i = 0; i < 4; i++) {
           if (currNumArr[i] === inpNumArr[i]) {
-            this.setState({bulls: this.state.gameData.bulls+1});
+            bulls++;
           } else if (inpNumArr.includes(currNumArr[i], 0)) {
-            this.setState({cows: this.state.gameData.cows + 1});
+            cows++;
           }
         }
+        this.setState({
+          gameData: {
+            cows, bulls
+          }
+        });
       }
     } else {
-      this.setState({ warnings: [...warningsTexts] });
+      this.setState({
+        warnings: [...warningsTexts],
+        gameData: {
+          cows: 0,
+          bulls: 0
+        }
+      });
     }
   }
 
-  // getWarnings = (): JSX.Element[] => {
-  //   let key = 0;
-  //   return (this.state.warnings.length > 0) ? (
-  //     this.state.warnings.map(text => <Warning text={text} key={key++} />)
-  //   ) : [];
-  // }
+  restartGame = (): void => {
+    this.setState({
+      moves: 0,
+      currentNumber: 0,
+      enteredNumber: 0,
+      gameData: {
+        cows: 0,
+        bulls: 0
+      },
+      incorrectNumbers: [],
+      warnings: []
+    });
+    this.generateNumber();
+  }
 
   render() {
     return (
@@ -117,11 +140,13 @@ class App extends React.Component<{}, {}> {
         <Moves moves={this.state.moves} />
         {/* <button onClick={() => this.generateNumber()}>click me</button> */}
         <NumInput parentCallBack={this.handleCallBack} />
-        <button onClick={(e) => {
+        <button type="submit" name="numberInput" onClick={(e) => {
           e.preventDefault();
           this.compareNumbers();
+
         }}>Check the number</button>
-        <WarningsContainer warnings={this.state.warnings}/>
+        <WarningsContainer warnings={this.state.warnings} />
+        <CowBulls cows={this.state.gameData.cows} bulls={this.state.gameData.bulls} />
       </>
     )
   }

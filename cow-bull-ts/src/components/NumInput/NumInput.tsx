@@ -6,18 +6,22 @@ interface INumInputProps {
 
 
 const NumInput: FC<INumInputProps> = (props) => {
-	const [input, setInput] = useState<number| undefined>(undefined);
-	//const getInput = (): number| undefined => input;
+	const [input, setInput] = useState<number>(0);
 
 	return (
-		<form action="#">
+		<form action="#"
+		onSubmit={(e) => {
+			}}
+		name="numberInput">
 			<input type="number"
 				placeholder="Enter the number"
 				name="numberInput"
+				value={input}
 				onChange={(e) => {
 					setInput(+e.target.value);
 					props.parentCallBack(+e.target.value);
-				}} />
+				}}
+				/>
 		</form>
 	)
 }
