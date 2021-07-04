@@ -6,7 +6,7 @@ import CowBulls from './components/CowBulls/CowBulls';
 
 //* TODO 1: refactor the form submission === DONE
 //* TODO 2: make win condition === DONE
-
+//! TODO: Add hint system
 
 interface IAppState {
   moves: number
@@ -61,6 +61,16 @@ class App extends React.Component<{}, {}> {
     });
   }
 
+  displayMessage = async (messages: string[]) : Promise<void> => {
+    Promise.resolve(messages)
+    .then(() => {
+      setTimeout(() => this.setState({warnings: [...messages]}), 0);
+    })
+    .then(() => {
+      setTimeout(() => this.setState({warnings: []}), 2000);
+    });
+  }
+
   areRepeatedDigits = (n: number): boolean => (/([0-9]).*?\1/).test(n.toString());
 
   compareNumbers = (): void => {
@@ -89,18 +99,8 @@ class App extends React.Component<{}, {}> {
         warnings: []
       });
       if (this.state.currentNumber === this.state.enteredNumber) {
-        Promise.resolve()
-        .then(() => {
-          setTimeout(() => this.setState({warnings: ["YOU WIN!!!"]}), 0);
-        })
-        .then(res => {
-          this.restartGame();
-          return res;
-        })
-        .then(res => {
-          setTimeout(() => this.setState({warnings: []}), 2000);
-          return res;
-        });
+        this.displayMessage(["YOU WIN!!"]);
+        this.restartGame();
 
       } else {
         const currNumArr = this.state.currentNumber.toString().split('');
@@ -120,13 +120,8 @@ class App extends React.Component<{}, {}> {
         });
       }
     } else {
-      this.setState({
-        warnings: [...warningsTexts],
-        gameData: {
-          cows: 0,
-          bulls: 0
-        }
-      });
+      this.displayMessage([...warningsTexts]);
+      this.setState({gameData: {cows: 0, bulls: 0}});
     }
   }
 
@@ -151,9 +146,8 @@ class App extends React.Component<{}, {}> {
         <h1>Cow-Bull game</h1>
         <h3>React+Typescript version</h3>
         <Moves moves={this.state.moves} />
-        {/* <button onClick={() => this.generateNumber()}>click me</button> */}
         <NumInput parentCallBack={this.handleCallBack} />
-        
+        <button onClick={this.restartGame}>restart game</button>
         <WarningsContainer warnings={this.state.warnings} />
         <CowBulls cows={this.state.gameData.cows} bulls={this.state.gameData.bulls} />
       </>
