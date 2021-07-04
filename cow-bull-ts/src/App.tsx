@@ -5,7 +5,7 @@ import WarningsContainer from './components/Warning/WarningsContainer';
 import CowBulls from './components/CowBulls/CowBulls';
 
 //* TODO 1: refactor the form submission === DONE
-//! TODO 2: make win condition
+//* TODO 2: make win condition === DONE
 
 
 interface IAppState {
@@ -89,7 +89,19 @@ class App extends React.Component<{}, {}> {
         warnings: []
       });
       if (this.state.currentNumber === this.state.enteredNumber) {
-        this.restartGame();
+        Promise.resolve()
+        .then(() => {
+          setTimeout(() => this.setState({warnings: ["YOU WIN!!!"]}), 0);
+        })
+        .then(res => {
+          this.restartGame();
+          return res;
+        })
+        .then(res => {
+          setTimeout(() => this.setState({warnings: []}), 2000);
+          return res;
+        });
+
       } else {
         const currNumArr = this.state.currentNumber.toString().split('');
         const inpNumArr = this.state.enteredNumber.toString().split('');
