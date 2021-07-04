@@ -1,10 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import Moves from './components/Moves/Moves';
 import NumInput from './components/NumInput/NumInput';
 import WarningsContainer from './components/Warning/WarningsContainer';
 import CowBulls from './components/CowBulls/CowBulls';
 
-// TODO 1: refactor the form submission
+//* TODO 1: refactor the form submission === DONE
+//! TODO 2: make win condition
 
 
 interface IAppState {
@@ -32,15 +33,15 @@ class App extends React.Component<{}, {}> {
     warnings: []
   }
 
-
   componentDidMount() {
     this.generateNumber();
   }
 
-  handleCallBack = (childData: number | undefined) => {
-    this.setState({
+  handleCallBack = async (childData: number): Promise<void> => {
+    await this.setState({
       enteredNumber: childData
     });
+    this.compareNumbers();
   }
 
   generateNumber = (): void => {
@@ -140,11 +141,7 @@ class App extends React.Component<{}, {}> {
         <Moves moves={this.state.moves} />
         {/* <button onClick={() => this.generateNumber()}>click me</button> */}
         <NumInput parentCallBack={this.handleCallBack} />
-        <button type="submit" name="numberInput" onClick={(e) => {
-          e.preventDefault();
-          this.compareNumbers();
-
-        }}>Check the number</button>
+        
         <WarningsContainer warnings={this.state.warnings} />
         <CowBulls cows={this.state.gameData.cows} bulls={this.state.gameData.bulls} />
       </>
