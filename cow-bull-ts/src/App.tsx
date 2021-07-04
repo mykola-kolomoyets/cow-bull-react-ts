@@ -61,13 +61,13 @@ class App extends React.Component<{}, {}> {
     });
   }
 
-  displayMessage = async (messages: string[]) : Promise<void> => {
+  displayMessage = async (messages: string[], ms: number) : Promise<void> => {
     Promise.resolve(messages)
     .then(() => {
       setTimeout(() => this.setState({warnings: [...messages]}), 0);
     })
     .then(() => {
-      setTimeout(() => this.setState({warnings: []}), 2000);
+      setTimeout(() => this.setState({warnings: []}), ms);
     });
   }
 
@@ -99,7 +99,7 @@ class App extends React.Component<{}, {}> {
         warnings: []
       });
       if (this.state.currentNumber === this.state.enteredNumber) {
-        this.displayMessage(["YOU WIN!!"]);
+        this.displayMessage(["YOU WIN!!"], 2000);
         this.restartGame();
 
       } else {
@@ -120,7 +120,7 @@ class App extends React.Component<{}, {}> {
         });
       }
     } else {
-      this.displayMessage([...warningsTexts]);
+      this.displayMessage([...warningsTexts], 2000);
       this.setState({gameData: {cows: 0, bulls: 0}});
     }
   }
