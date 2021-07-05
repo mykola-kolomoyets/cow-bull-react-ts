@@ -12,7 +12,6 @@ const NumInput: FC<INumInputProps> = (props) => {
 			e.preventDefault();
 			props.parentCallBack(input);
 			await setInput(0);
-			//console.log("Number: ", input);
 		}}>
 			<input type="number"
 			placeholder="Enter the number"
@@ -20,7 +19,7 @@ const NumInput: FC<INumInputProps> = (props) => {
 			value={input}
 			onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 				setInput(+e.target.value);
-				//console.log("changed: ", +e.target.value);
+				console.log("changed: ", input);
 			}} />
 			<button type="submit" name="number">Check the number</button>
 		</form>

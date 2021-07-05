@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Moves from './components/Moves/Moves';
 import NumInput from './components/NumInput/NumInput';
 import WarningsContainer from './components/Warning/WarningsContainer';
@@ -6,6 +6,7 @@ import CowBulls from './components/CowBulls/CowBulls';
 
 //* TODO 1: refactor the form submission === DONE
 //* TODO 2: make win condition === DONE
+//! TODO: refactor App component to FC
 //! TODO: Add hint system
 
 interface IAppState {
@@ -20,113 +21,9 @@ interface IAppState {
   warnings: string[]
 };
 
-class App extends React.Component<{}, {}> {
-  state: IAppState = {
-    moves: 0,
-    currentNumber: 0,
-    enteredNumber: 0,
-    gameData: {
-      cows: 0,
-      bulls: 0
-    },
-    incorrectNumbers: [],
-    warnings: []
-  }
-
-  componentDidMount() {
-    this.generateNumber();
-  }
-
-  handleCallBack = async (childData: number): Promise<void> => {
-    await this.setState({
-      enteredNumber: childData
-    });
-    this.compareNumbers();
-  }
-
-  generateNumber = (): void => {
-    let digits: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    let arr: number[] = [];
-
-    for (let i = 0; i < 4; i++) {
-      let index = Math.floor(Math.random() * digits.length);
-      if (i === 0 && index === 0) index++;
-      arr.push(digits[index]);
-      digits.splice(index, 1);
-    }
-
-    this.setState({
-      currentNumber: +(arr.join('')),
-      incorrectNumbers: digits
-    });
-  }
-
-  displayMessage = async (messages: string[], ms: number) : Promise<void> => {
-    Promise.resolve(messages)
-    .then(() => {
-      setTimeout(() => this.setState({warnings: [...messages]}), 0);
-    })
-    .then(() => {
-      setTimeout(() => this.setState({warnings: []}), ms);
-    });
-  }
-
-  areRepeatedDigits = (n: number): boolean => (/([0-9]).*?\1/).test(n.toString());
-
-  compareNumbers = (): void => {
-    // [0] -> is 4 digits
-    // [1] -> has repeated digits
-    const criterias: boolean[] = [false, false];
-    const warningsTexts: string[] = [];
-    console.log(this.state.enteredNumber, this.state.currentNumber);
-
-    if (this.state.enteredNumber < 1000 ||
-      this.state.enteredNumber > 10000) {
-      warningsTexts.push("The number is non 4-digit");
-    } else {
-      criterias[0] = true;
-    }
-
-    if (this.areRepeatedDigits(this.state.enteredNumber)) {
-      warningsTexts.push("The number has repeated digits");
-    } else {
-      criterias[1] = true
-    }
-
-    if (criterias.every(el => el)) {
-      this.setState({
-        moves: this.state.moves + 1,
-        warnings: []
-      });
-      if (this.state.currentNumber === this.state.enteredNumber) {
-        this.displayMessage(["YOU WIN!!"], 2000);
-        this.restartGame();
-
-      } else {
-        const currNumArr = this.state.currentNumber.toString().split('');
-        const inpNumArr = this.state.enteredNumber.toString().split('');
-        let cows = 0, bulls = 0;
-        for (let i = 0; i < 4; i++) {
-          if (currNumArr[i] === inpNumArr[i]) {
-            bulls++;
-          } else if (inpNumArr.includes(currNumArr[i], 0)) {
-            cows++;
-          }
-        }
-        this.setState({
-          gameData: {
-            cows, bulls
-          }
-        });
-      }
-    } else {
-      this.displayMessage([...warningsTexts], 2000);
-      this.setState({gameData: {cows: 0, bulls: 0}});
-    }
-  }
-
-  restartGame = (): void => {
-    this.setState({
+const App: FC = () => {
+  const [data, setData] = useState<IAppState>(
+    {
       moves: 0,
       currentNumber: 0,
       enteredNumber: 0,
@@ -137,22 +34,144 @@ class App extends React.Component<{}, {}> {
       incorrectNumbers: [],
       warnings: []
     });
-    this.generateNumber();
+
+  // useEffect(() => {
+  //   generateNumber();
+  // }, []);
+
+  // useEffect(() => {
+  //   compareNumbers();
+  // }, [data.enteredNumber])
+
+  const handleCallBack = async (childData: number): Promise<void> => {
+    console.log("translating the number to App");
+    
+    await setData({...data, enteredNumber: childData});
+
+    // Promise.resolve()
+    // .then((res) => {
+    //   setData(prevData => {
+    //     return {
+    //       ...prevData,
+    //       enteredNumber: childData
+    //     }
+    //   })
+    // })
+    // .then((res) => {
+    //   resolve(compareNumbers());
+    // })
+    //compareNumbers();
   }
 
-  render() {
-    return (
-      <>
-        <h1>Cow-Bull game</h1>
-        <h3>React+Typescript version</h3>
-        <Moves moves={this.state.moves} />
-        <NumInput parentCallBack={this.handleCallBack} />
-        <button onClick={this.restartGame}>restart game</button>
-        <WarningsContainer warnings={this.state.warnings} />
-        <CowBulls cows={this.state.gameData.cows} bulls={this.state.gameData.bulls} />
-      </>
-    )
+  const generateNumber = (): void => {
+    let digits: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let arr: number[] = [];
+
+    for (let i = 0; i < 4; i++) {
+      let index = Math.floor(Math.random() * digits.length);
+      if (i === 0 && index === 0) index++;
+      arr.push(digits[index]);
+      digits.splice(index, 1);
+    }
+
+    setData({
+      ...data,
+      currentNumber: +arr.join(''),
+      incorrectNumbers: digits
+    });
+
   }
+
+  const displayMessage = async (messages: string[], ms: number): Promise<void> => {
+    Promise.resolve(messages)
+      .then(() => {
+        setTimeout(() => setData({ ...data, warnings: [...messages] }), 0);
+      })
+      .then(() => {
+        setTimeout(() => setData({ ...data, warnings: [] }), ms);
+      });
+  }
+
+  const areRepeatedDigits = (n: number): boolean => (/([0-9]).*?\1/).test(n.toString());
+
+  const compareNumbers = (): void => {
+    // [0] -> is 4 digits
+    // [1] -> has repeated digits
+    const criterias: boolean[] = [false, false];
+    const warningsTexts: string[] = [];
+    console.log(`My: ${data.enteredNumber}, Correct: ${data.currentNumber}`);
+
+    if (data.enteredNumber < 1000 ||
+      data.enteredNumber > 10000) {
+      warningsTexts.push("The number is non 4-digit");
+    } else {
+      criterias[0] = true;
+    }
+
+    if (areRepeatedDigits(data.enteredNumber)) {
+      warningsTexts.push("The number has repeated digits");
+    } else {
+      criterias[1] = true
+    }
+
+    if (criterias.every(el => el)) {
+      setData({
+        ...data,
+        moves: data.moves + 1,
+        warnings: []
+      });
+      if (data.currentNumber === data.enteredNumber) {
+        displayMessage(["YOU WIN!!"], 2000);
+        startNewGame();
+      } else {
+        const currNumArr = data.currentNumber.toString().split('');
+        const inpNumArr = data.enteredNumber.toString().split('');
+        let cows = 0, bulls = 0;
+        for (let i = 0; i < 4; i++) {
+          if (currNumArr[i] === inpNumArr[i]) {
+            bulls++;
+          } else if (inpNumArr.includes(currNumArr[i], 0)) {
+            cows++;
+          }
+        }
+        setData({
+          ...data,
+          gameData: {
+            cows, bulls
+          }
+        });
+      }
+    } else {
+      displayMessage([...warningsTexts], 2000);
+      setData({ ...data, gameData: { cows: 0, bulls: 0 } });
+    }
+  }
+
+  const startNewGame = (): void => {
+    setData({
+      moves: 0,
+      currentNumber: 0,
+      enteredNumber: 0,
+      gameData: {
+        cows: 0,
+        bulls: 0
+      },
+      incorrectNumbers: [],
+      warnings: []
+    });
+    generateNumber();
+  }
+  return (
+    <>
+      <h1>Cow-Bull game</h1>
+      <h3>React+Typescript version</h3>
+      <Moves moves={data.moves} />
+      <NumInput parentCallBack={handleCallBack} />
+      <button onClick={startNewGame}>restart game</button>
+      <WarningsContainer warnings={data.warnings} />
+      <CowBulls cows={data.gameData.cows} bulls={data.gameData.bulls} />
+    </>
+  )
 }
 
 export default App;
