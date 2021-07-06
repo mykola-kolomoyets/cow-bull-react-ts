@@ -8,6 +8,7 @@ import CowBulls from './components/CowBulls/CowBulls';
 //* TODO 2: make win condition === DONE
 //^ TODO: refactor App component to FC
 //!!! TODO: solve useEffect problem
+//! TODO: return moves increment
 //! TODO: Add hint system
 
 interface IAppState {
@@ -122,7 +123,7 @@ const App: FC = () => {
       if (criterias.every(el => el)) {
         setData({
           ...data,
-          moves: data.moves + 1,
+          moves: data.moves++,
           warnings: []
         });
         if (data.currentNumber === data.enteredNumber) {
