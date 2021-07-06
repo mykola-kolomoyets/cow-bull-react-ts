@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, useCallback} from 'react';
 import Moves from './components/Moves/Moves';
 import NumInput from './components/NumInput/NumInput';
 import WarningsContainer from './components/Warning/WarningsContainer';
@@ -6,7 +6,8 @@ import CowBulls from './components/CowBulls/CowBulls';
 
 //* TODO 1: refactor the form submission === DONE
 //* TODO 2: make win condition === DONE
-//! TODO: refactor App component to FC
+//^ TODO: refactor App component to FC
+//!!! TODO: solve useEffect problem
 //! TODO: Add hint system
 
 interface IAppState {
@@ -35,54 +36,38 @@ const App: FC = () => {
       warnings: []
     });
 
-  // useEffect(() => {
-  //   generateNumber();
-  // }, []);
 
-  // useEffect(() => {
-  //   compareNumbers();
-  // }, [data.enteredNumber])
 
   const handleCallBack = async (childData: number): Promise<void> => {
-    console.log("translating the number to App");
-    
-    await setData({...data, enteredNumber: childData});
-
-    // Promise.resolve()
-    // .then((res) => {
-    //   setData(prevData => {
-    //     return {
-    //       ...prevData,
-    //       enteredNumber: childData
-    //     }
-    //   })
-    // })
-    // .then((res) => {
-    //   resolve(compareNumbers());
-    // })
-    //compareNumbers();
+    console.log("Getting the number to from input");
+    await setData({ ...data, enteredNumber: childData });
   }
 
-  const generateNumber = (): void => {
-    let digits: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    let arr: number[] = [];
+  const generateNumber = useCallback(
+    (): void => {
+      console.log("generating number...");
+      
+      let digits: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+      let arr: number[] = [];
+  
+      for (let i = 0; i < 4; i++) {
+        let index = Math.floor(Math.random() * digits.length);
+        if (i === 0 && index === 0) index++;
+        arr.push(digits[index]);
+        digits.splice(index, 1);
+      }
+  
+      setData({
+        ...data,
+        currentNumber: +arr.join(''),
+        incorrectNumbers: digits
+      });
+  
+    },
+    [data, setData]
+  )
 
-    for (let i = 0; i < 4; i++) {
-      let index = Math.floor(Math.random() * digits.length);
-      if (i === 0 && index === 0) index++;
-      arr.push(digits[index]);
-      digits.splice(index, 1);
-    }
-
-    setData({
-      ...data,
-      currentNumber: +arr.join(''),
-      incorrectNumbers: digits
-    });
-
-  }
-
-  const displayMessage = async (messages: string[], ms: number): Promise<void> => {
+  const displayMessage = useCallback(async (messages: string[], ms: number): Promise<void> => {
     Promise.resolve(messages)
       .then(() => {
         setTimeout(() => setData({ ...data, warnings: [...messages] }), 0);
@@ -90,64 +75,11 @@ const App: FC = () => {
       .then(() => {
         setTimeout(() => setData({ ...data, warnings: [] }), ms);
       });
-  }
+  }, [data, setData])
 
   const areRepeatedDigits = (n: number): boolean => (/([0-9]).*?\1/).test(n.toString());
 
-  const compareNumbers = (): void => {
-    // [0] -> is 4 digits
-    // [1] -> has repeated digits
-    const criterias: boolean[] = [false, false];
-    const warningsTexts: string[] = [];
-    console.log(`My: ${data.enteredNumber}, Correct: ${data.currentNumber}`);
-
-    if (data.enteredNumber < 1000 ||
-      data.enteredNumber > 10000) {
-      warningsTexts.push("The number is non 4-digit");
-    } else {
-      criterias[0] = true;
-    }
-
-    if (areRepeatedDigits(data.enteredNumber)) {
-      warningsTexts.push("The number has repeated digits");
-    } else {
-      criterias[1] = true
-    }
-
-    if (criterias.every(el => el)) {
-      setData({
-        ...data,
-        moves: data.moves + 1,
-        warnings: []
-      });
-      if (data.currentNumber === data.enteredNumber) {
-        displayMessage(["YOU WIN!!"], 2000);
-        startNewGame();
-      } else {
-        const currNumArr = data.currentNumber.toString().split('');
-        const inpNumArr = data.enteredNumber.toString().split('');
-        let cows = 0, bulls = 0;
-        for (let i = 0; i < 4; i++) {
-          if (currNumArr[i] === inpNumArr[i]) {
-            bulls++;
-          } else if (inpNumArr.includes(currNumArr[i], 0)) {
-            cows++;
-          }
-        }
-        setData({
-          ...data,
-          gameData: {
-            cows, bulls
-          }
-        });
-      }
-    } else {
-      displayMessage([...warningsTexts], 2000);
-      setData({ ...data, gameData: { cows: 0, bulls: 0 } });
-    }
-  }
-
-  const startNewGame = (): void => {
+  const startNewGame = useCallback((): void => {
     setData({
       moves: 0,
       currentNumber: 0,
@@ -160,7 +92,71 @@ const App: FC = () => {
       warnings: []
     });
     generateNumber();
-  }
+  }, [generateNumber, setData])
+
+  const compareNumbers = useCallback(
+    (): void => {
+      console.log("Comparing the numbers...");
+      // [0] -> is 4 digits
+      // [1] -> has repeated digits
+      const criterias: boolean[] = [false, false];
+      const warningsTexts: string[] = [];
+      console.log(`My: ${data.enteredNumber}, Correct: ${data.currentNumber}`);
+  
+      if (data.enteredNumber < 1000 ||
+        data.enteredNumber > 10000) {
+        warningsTexts.push("The number is non 4-digit");
+      } else {
+        criterias[0] = true;
+      }
+  
+      if (areRepeatedDigits(data.enteredNumber)) {
+        warningsTexts.push("The number has repeated digits");
+      } else {
+        criterias[1] = true
+      }
+  
+      if (criterias.every(el => el)) {
+        setData({
+          ...data,
+          moves: data.moves + 1,
+          warnings: []
+        });
+        if (data.currentNumber === data.enteredNumber) {
+          displayMessage(["YOU WIN!!"], 2000);
+          startNewGame();
+        } else {
+          const currNumArr = data.currentNumber.toString().split('');
+          const inpNumArr = data.enteredNumber.toString().split('');
+          let cows = 0, bulls = 0;
+          for (let i = 0; i < 4; i++) {
+            if (currNumArr[i] === inpNumArr[i]) {
+              bulls++;
+            } else if (inpNumArr.includes(currNumArr[i], 0)) {
+              cows++;
+            }
+          }
+          setData({
+            ...data,
+            gameData: {
+              cows, bulls
+            }
+          });
+        }
+      } else {
+        displayMessage([...warningsTexts], 2000);
+        setData({ ...data, gameData: { cows: 0, bulls: 0 } });
+      }
+    },
+    [data, setData, displayMessage, startNewGame]
+  );
+
+  
+  // componentDidMount
+  useEffect(generateNumber, []);
+
+  //useEffect(compareNumbers);
+
   return (
     <>
       <h1>Cow-Bull game</h1>
