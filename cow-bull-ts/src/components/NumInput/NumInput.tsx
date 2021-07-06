@@ -2,7 +2,8 @@ import React, { FC, useState } from 'react';
 
 interface INumInputProps {
 	parentCallBack: (childData: number) => void
-}
+};
+
 const NumInput: FC<INumInputProps> = (props) => {
 	const [input, setInput] = useState<number>(0);
 
@@ -23,7 +24,7 @@ const NumInput: FC<INumInputProps> = (props) => {
 			}} />
 			<button type="submit" name="number">Check the number</button>
 		</form>
-	)
-}
+	);
+};
 
 export default NumInput;
