@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useCallback} from 'react';
+import React, { FC, useEffect, useMemo, useState, useCallback} from 'react';
 import Moves from './components/Moves/Moves';
 import NumInput from './components/NumInput/NumInput';
 import WarningsContainer from './components/Warning/WarningsContainer';
@@ -19,7 +19,8 @@ interface IAppState {
     bulls: number
   }
   incorrectNumbers: number[]
-  warnings: string[]
+  warnings: string[],
+  isWin: boolean
 };
 
 const App: FC = () => {
@@ -33,7 +34,8 @@ const App: FC = () => {
         bulls: 0
       },
       incorrectNumbers: [],
-      warnings: []
+      warnings: [],
+      isWin: false
     });
 
 
@@ -89,7 +91,8 @@ const App: FC = () => {
         bulls: 0
       },
       incorrectNumbers: [],
-      warnings: []
+      warnings: [],
+      isWin: false
     });
     generateNumber();
   }, [generateNumber, setData])
@@ -124,7 +127,7 @@ const App: FC = () => {
         });
         if (data.currentNumber === data.enteredNumber) {
           displayMessage(["YOU WIN!!"], 2000);
-          startNewGame();
+          setData({...data, isWin: true});
         } else {
           const currNumArr = data.currentNumber.toString().split('');
           const inpNumArr = data.enteredNumber.toString().split('');
@@ -153,9 +156,21 @@ const App: FC = () => {
 
   
   // componentDidMount
-  useEffect(generateNumber, []);
+  useEffect(() => {
+    console.log("effect-start");
+    generateNumber();
+  }, []);
 
-  //useEffect(compareNumbers);
+  useMemo(() => {
+    console.log("memo");
+    startNewGame();
+  }, [data.isWin]);
+
+  useEffect(() => {
+    console.log("effect-comparing");
+    compareNumbers();
+  },
+  [data.enteredNumber]);
 
   return (
     <>
