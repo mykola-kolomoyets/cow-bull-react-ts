@@ -10,7 +10,9 @@ interface IWarningsContainerProps {
 
 const WarningsContainer: FC<IWarningsContainerProps> = (props: IWarningsContainerProps) => {
 	let key = 0;
-	let result: JSX.Element[] = [];
+	let result: JSX.Element[] | null = null;
+
+	if (props.warnings === []) return null;
 
 	result = props.warnings.map(text => <Warning text={text} key={key++} />);
 

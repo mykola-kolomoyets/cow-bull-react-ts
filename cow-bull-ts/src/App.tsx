@@ -1,11 +1,12 @@
 // === default
-import React, { FC, useEffect, useMemo, useState, useCallback } from 'react';
+import React, { FC, useEffect, useMemo, useState, useCallback} from 'react';
 
 // === components
 import Moves from './components/Moves/Moves';
 import NumInput from './components/NumInput/NumInput';
 import WarningsContainer from './components/Warning/WarningsContainer';
 import CowBulls from './components/CowBulls/CowBulls';
+import WarningState from './context/warning/WarningState';
 
 //& comments description
 //* === DONE
@@ -55,9 +56,17 @@ const App: FC = () => {
     await setData({ ...data, enteredNumber: childData });
   };
 
+  // const usePrevious = (value: any) => {
+  //   const ref = useRef();
+  //   useEffect(() => {
+  //     ref.current = value;
+  //   });
+  //   return ref.current;
+  // }
+
   const generateNumber = useCallback(
     (): void => {
-      console.log("generating number...");
+      
       let digits: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
       let arr: number[] = [];
 
@@ -73,6 +82,7 @@ const App: FC = () => {
         currentNumber: +arr.join(''),
         incorrectNumbers: digits
       });
+      console.log(`generating number... ${+arr.join('')}: ${data.currentNumber}`);
     },
     [data, setData]
   );
@@ -111,7 +121,7 @@ const App: FC = () => {
   //   [generateNumber, setData]
   // )
 
-  const startNewGame = (): void => {
+  const startNewGame = useCallback((): void => {
     setData({
       moves: 0,
       currentNumber: 0,
@@ -125,7 +135,7 @@ const App: FC = () => {
       isWin: false
     });
     generateNumber();
-  }
+  }, [setData, generateNumber]);
 
   const compareNumbers = useCallback(
     (): void => {
@@ -134,9 +144,8 @@ const App: FC = () => {
       //^ === [1] -> has repeated digits
       const criterions: boolean[] = [false, false];
       const warningsTexts: string[] = [];
-
-      if ((data.enteredNumber < 1000 ||
-        data.enteredNumber > 10000) && data.enteredNumber !== 0) {
+      if (data.enteredNumber < 1000 ||
+        data.enteredNumber > 10000) {
         warningsTexts.push("The number is non 4-digit");
       } else {
         criterions[0] = true;
@@ -187,30 +196,38 @@ const App: FC = () => {
   );
 
   // componentDidMount
-  // useEffect(() => {
-  //   console.log("effect-start");
-  //   generateNumber();
-  // }, []);
+  useEffect(() => {
+    console.log("effect-start");
+    generateNumber();
+    //eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    console.warn(`NEW STATE: ${data.currentNumber}`);
+  });
 
   useMemo(() => {
-    console.log("memo");
+    console.log("memo-start-new-game");
     (!data.isWin) && startNewGame();
+    //eslint-disable-next-line
   }, [data.isWin]);
 
   useEffect(() => {
     console.log("effect-comparing");
-    compareNumbers();
+    if (data.enteredNumber) compareNumbers();
   }, [data.enteredNumber]);
 
   return (
     <>
-      <h1>Cow-Bull game</h1>
-      <h3>React+Typescript version</h3>
-      <Moves moves={data.moves} />
-      <NumInput parentCallBack={handleCallBack} />
-      <button onClick={() => startNewGame()}>restart game</button>
-      <WarningsContainer warnings={data.warnings} />
-      <CowBulls cows={data.gameData.cows} bulls={data.gameData.bulls} />
+      <WarningState>
+        <h1>Cow-Bull game</h1>
+        <h3>React+Typescript version</h3>
+        <Moves moves={data.moves} />
+        <NumInput parentCallBack={handleCallBack} />
+        <button onClick={() => startNewGame()}>restart game</button>
+        <WarningsContainer warnings={data.warnings} />
+        <CowBulls cows={data.gameData.cows} bulls={data.gameData.bulls} />
+      </WarningState>
     </>
   )
 }
