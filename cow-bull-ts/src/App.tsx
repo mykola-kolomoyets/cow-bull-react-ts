@@ -72,7 +72,7 @@ const App: FC = () => {
 
       for (let i = 0; i < 4; i++) {
         let index = Math.floor(Math.random() * digits.length);
-        (i === 0 && index === 0) && index++;
+        if (i === 0 && index === 0) index++;
         arr.push(digits[index]);
         digits.splice(index, 1);
       }
@@ -208,7 +208,7 @@ const App: FC = () => {
 
   useMemo(() => {
     console.log("memo-start-new-game");
-    (!data.isWin) && startNewGame();
+    if (!data.isWin) startNewGame();
     //eslint-disable-next-line
   }, [data.isWin]);
 
