@@ -1,24 +1,19 @@
 // === default
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
+import WarningContext from '../../context/warning/warningContext';
 
-// === components
-import Warning from './Warning';
+const WarningsContainer: FC<{}> = () => {
 
-interface IWarningsContainerProps {
-	warnings: string[]
-};
-
-const WarningsContainer: FC<IWarningsContainerProps> = (props: IWarningsContainerProps) => {
-	let key = 0;
-	let result: JSX.Element[] | null = null;
-
-	if (props.warnings === []) return null;
-
-	result = props.warnings.map(text => <Warning text={text} key={key++} />);
+	const {warning, hide} = useContext(WarningContext);
+	if (!warning.visible) {
+		return null;
+	}
 
 	return (
-		<div className="warnings-container">
-			{result}
+		<div className={`alert alert-${warning.type || 'warning'} alert-dismissible`}>
+			<strong>WARNING!!</strong>&nbsp;
+			{warning.text}
+			<button onClick={hide} className="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		</div>
 	);
 };
