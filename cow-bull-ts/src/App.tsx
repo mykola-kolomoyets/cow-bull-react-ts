@@ -1,12 +1,12 @@
 // === default
-import React, { FC, useEffect, useMemo, useState, useCallback, useContext} from 'react';
+import React, { FC, useEffect, useState, useCallback, useContext} from 'react';
 
 // === components
 import Moves from './components/Moves/Moves';
 import NumInput from './components/NumInput/NumInput';
 import WarningsContainer from './components/Warning/WarningsContainer';
 import CowBulls from './components/CowBulls/CowBulls';
-import WarningState from './context/warning/WarningState';
+//import WarningState from './context/warning/WarningState';
 import WarningContext from './context/warning/warningContext';
 
 //& comments description
@@ -20,7 +20,8 @@ import WarningContext from './context/warning/warningContext';
 //* TODO 2: make win condition === DONE
 //* TODO 3 return moves increment === DONE
 //~ TODO: refactor App component to FC
-//!!! TODO: solve useEffect problem
+//* !!! TODO: solve useEffect problem === DONE
+//!!! TODO: Fix starting comparings after starting new game
 //! TODO: Add hint system
 
 interface IAppState {
@@ -32,9 +33,6 @@ interface IAppState {
     bulls: number
   }
   incorrectNumbers: number[]
-  // warnings: string[],
-  isWin: boolean,
-  warningContext?: any
 };
 
 const App: FC = () => {
@@ -48,8 +46,6 @@ const App: FC = () => {
         bulls: 0
       },
       incorrectNumbers: [],
-      // warnings: [],
-      isWin: false,
     }
   );
 
@@ -58,7 +54,6 @@ const App: FC = () => {
   //^ === state lifting up ===
   const handleCallBack = async (childData: number): Promise<void> => {
     console.log("Getting the number to from input");
-    warning.show("NUMBER ADDED!!!!", 'success');
     await setData({ ...data, enteredNumber: childData });
   };
 
@@ -128,12 +123,10 @@ const App: FC = () => {
         bulls: 0
       },
       incorrectNumbers: [],
-      // warnings: [],
-      isWin: false,
     });
     generateNumber();
-    warning.show("Starting new game: ", 'success');
-  }, [setData, generateNumber]);
+    warning.show("Game Started!", 'success');
+  }, [generateNumber, warning]);
 
   const compareNumbers = useCallback(
     (): void => {
@@ -164,7 +157,17 @@ const App: FC = () => {
         console.log(`comparing: ${data.currentNumber}: ${data.enteredNumber}`);
         
         if (data.currentNumber === data.enteredNumber) {
-          setData({ ...data, isWin: true });
+          warning.show("YOU WIN!", 'success');
+          console.warn("WIN");
+          setData({
+            ...data,
+            moves: 0,
+            currentNumber: 0,
+            enteredNumber: 0,
+            gameData: {cows: 0, bulls: 0}
+          })
+          
+          setTimeout(() => startNewGame(), 2000);
           // displayMessage(["YOU WIN!!"], 2000);
         } else {
           const currNumArr = data.currentNumber.toString().split('');
@@ -185,7 +188,7 @@ const App: FC = () => {
           });
         }
       } else {
-        const resMessage = warningsTexts.join(" and <br>");
+        const resMessage = warningsTexts.join(" and ");
         warning.show(resMessage, 'warning');
         // displayMessage([...warningsTexts], 2000);
         setData({ ...data, gameData: { cows: 0, bulls: 0 } });
@@ -201,24 +204,13 @@ const App: FC = () => {
     //eslint-disable-next-line
   }, []);
 
-  // useEffect(() => {
-  //   console.warn(`NEW STATE: ${data.currentNumber}`);
-  // });
-
-  useMemo(() => {
-    console.log("memo-start-new-game");
-    if (!data.isWin) startNewGame();
-    //eslint-disable-next-line
-  }, [data.isWin]);
-
   useEffect(() => {
     console.log("effect-comparing");
-    if (data.enteredNumber) compareNumbers();
+    if (data.enteredNumber !== 0) compareNumbers();
   }, [data.enteredNumber]);
 
   return (
     <main className="container">
-      <WarningState>
         <h1>Cow-Bull game</h1>
         <h3>React+Typescript version</h3>
         <Moves moves={data.moves} />
@@ -226,7 +218,6 @@ const App: FC = () => {
         <NumInput parentCallBack={handleCallBack} number={data.currentNumber} />
         <button onClick={() => startNewGame()}>restart game</button>
         <CowBulls cows={data.gameData.cows} bulls={data.gameData.bulls} />
-      </WarningState>
     </main>
   )
 }
