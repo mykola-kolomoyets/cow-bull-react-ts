@@ -6,7 +6,6 @@ import Moves from './components/Moves/Moves';
 import NumInput from './components/NumInput/NumInput';
 import WarningsContainer from './components/Warning/WarningsContainer';
 import CowBulls from './components/CowBulls/CowBulls';
-//import WarningState from './context/warning/WarningState';
 import WarningContext from './context/warning/warningContext';
 
 //& comments description
@@ -72,60 +71,29 @@ const App: FC = () => {
       setData({
         ...data,
         currentNumber: +arr.join(''),
-        incorrectNumbers: digits
+        incorrectNumbers: digits,
+        enteredNumber: 0,
+        gameData: {cows: 0, bulls: 0},
+        moves: 0
       });
       console.log(`generating number... ${+arr.join('')}: ${data.currentNumber}`);
     },
     [data, setData]
   );
 
-  //^ ===
-  // const displayMessage = useCallback(
-  //   async (messages: string[], ms: number): Promise<void> => {
-  //     Promise.resolve(messages)
-  //       .then(() => {
-  //         setTimeout(() => setData({ ...data, warnings: [...messages] }), 0);
-  //       })
-  //       .then(() => {
-  //         setTimeout(() => setData({ ...data, warnings: [] }), ms);
-  //       });
-  //   },
-  //   [data, setData]);
-
   const areRepeatedDigits = (n: number): boolean => (/([0-9]).*?\1/).test(n.toString());
 
-  // const startNewGame = useCallback(
-  // (): void => {
-  //     setData({
-  //       moves: 0,
-  //       currentNumber: 0,
-  //       enteredNumber: 0,
-  //       gameData: {
-  //         cows: 0,
-  //         bulls: 0
-  //       },
-  //       incorrectNumbers: [],
-  //       warnings: [],
-  //       isWin: false
-  //     });
-  //     generateNumber();
-  //   },
-  //   [generateNumber, setData]
-  // )
-
   const startNewGame = useCallback((): void => {
-    setData({
+    Promise.resolve()
+    .then(() => setData({
+      ...data,
       moves: 0,
-      currentNumber: 0,
       enteredNumber: 0,
-      gameData: {
-        cows: 0,
-        bulls: 0
-      },
-      incorrectNumbers: [],
-    });
-    generateNumber();
-    warning.show("Game Started!", 'success');
+      currentNumber: 0,
+      gameData: {cows: 0, bulls: 0}
+    }))
+    .then(() => generateNumber())
+    .then(() => warning.show("Game Started!", 'success'));
   }, [generateNumber, warning]);
 
   const compareNumbers = useCallback(
@@ -152,23 +120,25 @@ const App: FC = () => {
         setData({
           ...data,
           moves: data.moves++,
-          // warnings: []
         });
+        warning.hide();
         console.log(`comparing: ${data.currentNumber}: ${data.enteredNumber}`);
         
         if (data.currentNumber === data.enteredNumber) {
-          warning.show("YOU WIN!", 'success');
-          console.warn("WIN");
-          setData({
-            ...data,
-            moves: 0,
-            currentNumber: 0,
-            enteredNumber: 0,
-            gameData: {cows: 0, bulls: 0}
+          Promise.resolve()
+          .then(() => {
+            warning.show("YOU WIN!", 'success');
           })
-          
-          setTimeout(() => startNewGame(), 2000);
-          // displayMessage(["YOU WIN!!"], 2000);
+          .then(() => {
+            setTimeout(() => startNewGame(), 2000);
+          })      
+          .then(() => {
+            setData({
+              ...data,
+              moves: 0,
+              enteredNumber: 0
+            })
+          })   
         } else {
           const currNumArr = data.currentNumber.toString().split('');
           const inpNumArr = data.enteredNumber.toString().split('');
@@ -190,11 +160,10 @@ const App: FC = () => {
       } else {
         const resMessage = warningsTexts.join(" and ");
         warning.show(resMessage, 'warning');
-        // displayMessage([...warningsTexts], 2000);
         setData({ ...data, gameData: { cows: 0, bulls: 0 } });
       }
     },
-    [data, setData, warning]
+    [data, startNewGame, warning]
   );
 
   // componentDidMount
@@ -204,9 +173,11 @@ const App: FC = () => {
     //eslint-disable-next-line
   }, []);
 
+
   useEffect(() => {
     console.log("effect-comparing");
     if (data.enteredNumber !== 0) compareNumbers();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.enteredNumber]);
 
   return (

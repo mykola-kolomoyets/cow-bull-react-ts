@@ -14,10 +14,8 @@ export type dispatchType = {
 	};
 };
 
-
 const WarningState: FC<IWarningStateProps> = (props: IWarningStateProps) => {
 	const [state, dispatch] = useReducer(warningReducer, { visible: false });
-
 
 	const show = (text: string, type='warning', payload?: dispatchType): void => {
 		dispatch({
