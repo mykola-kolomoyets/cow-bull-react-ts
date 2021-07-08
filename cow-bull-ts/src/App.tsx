@@ -8,6 +8,9 @@ import WarningsContainer from './components/Warning/WarningsContainer';
 import CowBulls from './components/CowBulls/CowBulls';
 import WarningContext from './context/warning/warningContext';
 
+import {historyItem} from './context/types';
+import History from './components/History/History';
+
 //& comments description
 //* === DONE
 //~ === IN PROGRESS
@@ -19,7 +22,8 @@ import WarningContext from './context/warning/warningContext';
 //* TODO 2: make win condition === DONE
 //* TODO 3 return moves increment === DONE
 //* !!! TODO 4: solve useEffect problem === DONE
-//* !!! TODO 5: Fix starting comparings after starting new game === DONE
+//* !!! TODO 5: Fix starting comparisons after starting new game === DONE
+//* TODO 6: Add history of moves === DONE
 //~ TODO: refactor App component to FC
 //! TODO: Add styles
 //! TODO: Add hint system
@@ -32,7 +36,8 @@ interface IAppState {
     cows: number
     bulls: number
   }
-  incorrectNumbers: number[]
+  incorrectNumbers: number[],
+  history: historyItem[]
 };
 
 const App: FC = () => {
@@ -46,6 +51,7 @@ const App: FC = () => {
         bulls: 0
       },
       incorrectNumbers: [],
+      history: []
     }
   );
 
@@ -53,7 +59,6 @@ const App: FC = () => {
 
   //^ === state lifting up ===
   const handleCallBack = async (childData: number): Promise<void> => {
-    console.log("Getting the number to from input");
     await setData({ ...data, enteredNumber: childData });
   };
 
@@ -75,9 +80,9 @@ const App: FC = () => {
         incorrectNumbers: digits,
         enteredNumber: 0,
         gameData: {cows: 0, bulls: 0},
-        moves: 0
+        moves: 0,
+        history: []
       });
-      console.log(`generating number... ${+arr.join('')}: ${data.currentNumber}`);
     },
     [data, setData]
   );
@@ -86,20 +91,12 @@ const App: FC = () => {
 
   const startNewGame = useCallback((): void => {
     Promise.resolve()
-    .then(() => setData({
-      ...data,
-      moves: 0,
-      enteredNumber: 0,
-      currentNumber: 0,
-      gameData: {cows: 0, bulls: 0}
-    }))
     .then(() => generateNumber())
-    .then(() => warning.show("Game Started!", 'success'));
-  }, [data, generateNumber, warning]);
+    .then(() => warning.show("New Game Started! Have a good luck!!", 'success'));
+  }, [generateNumber, warning]);
 
   const compareNumbers = useCallback(
     (): void => {
-      console.log("Comparing the numbers...");
       //^ === [0] -> is 4 digits
       //^ === [1] -> has repeated digits
       const criterions: boolean[] = [false, false];
@@ -123,23 +120,14 @@ const App: FC = () => {
           moves: data.moves++,
         });
         warning.hide();
-        console.log(`comparing: ${data.currentNumber}: ${data.enteredNumber}`);
-        
         if (data.currentNumber === data.enteredNumber) {
           Promise.resolve()
           .then(() => {
             warning.show("YOU WIN!", 'success');
           })
           .then(() => {
-            startNewGame();
-          })      
-          .then(() => {
-            setData({
-              ...data,
-              moves: 0,
-              enteredNumber: 0
-            })
-          })   
+            setTimeout(() => startNewGame(), 2000);
+          }) 
         } else {
           const currNumArr = data.currentNumber.toString().split('');
           const inpNumArr = data.enteredNumber.toString().split('');
@@ -151,11 +139,17 @@ const App: FC = () => {
               cows++;
             }
           }
+
+          const newHistoryObj: historyItem = {
+            number: data.enteredNumber,
+            data: {cows, bulls}
+          }
           setData({
             ...data,
             gameData: {
               cows, bulls
-            }
+            },
+            history: [...data.history, newHistoryObj]
           });
         }
       } else {
@@ -190,6 +184,7 @@ const App: FC = () => {
         <NumInput parentCallBack={handleCallBack} number={data.currentNumber} />
         <button onClick={() => startNewGame()}>restart game</button>
         <CowBulls cows={data.gameData.cows} bulls={data.gameData.bulls} />
+        <History history={data.history}/>
     </main>
   )
 }
