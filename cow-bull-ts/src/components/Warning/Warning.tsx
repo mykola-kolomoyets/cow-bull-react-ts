@@ -1,9 +1,5 @@
 import React, { FC } from 'react';
-
-interface IWarningProps {
-	text: string
-};
-
+import { IWarningProps } from '../interfaces/interfaces';
 
 const Warning: FC<IWarningProps> = (props: IWarningProps) => {
 	return (

@@ -1,8 +1,6 @@
 import React, {FC} from 'react';
+import { IMovesProps } from '../interfaces/interfaces';
 
-export interface IMovesProps {
-	moves: number
-};
 
 const Moves: FC<IMovesProps> = (props: IMovesProps) => {
 	const {moves} = props;

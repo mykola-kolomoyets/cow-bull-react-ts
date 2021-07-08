@@ -1,12 +1,7 @@
 import React, {FC} from 'react'
-import {historyItem} from './../../context/types';
-
-interface IHistoryProps {
-	history: historyItem[]
-}
+import { IHistoryProps } from '../interfaces/interfaces';
 
 const History: FC<IHistoryProps> = (props: IHistoryProps) => {
-	
 	const historyEls = props.history.map(({number, data}) => (
 		<li key={number}>
 			<strong>{number}&nbsp;</strong>
@@ -20,7 +15,6 @@ const History: FC<IHistoryProps> = (props: IHistoryProps) => {
 			<ul>
 				{historyEls}
 			</ul>
-			
 		</section>
 	);
 };

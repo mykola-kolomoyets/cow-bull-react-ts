@@ -1,8 +1,5 @@
 import React, { FC, useState, useContext } from 'react';
-interface INumInputProps {
-	parentCallBack: (childData: number) => void;
-	number: number
-}
+import { INumInputProps } from '../interfaces/interfaces';
 
 const NumInput: FC<INumInputProps> = (props) => {
 	const [input, setInput] = useState<number>(0);

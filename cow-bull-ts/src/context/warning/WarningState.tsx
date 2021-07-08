@@ -1,18 +1,10 @@
 import React, { FC, useReducer } from 'react';
 import WarningContext from './warningContext';
 import { warningReducer } from './warningReducer';
-import { SHOW_ALERT, HIDE_ALERT } from './../types';
+import { SHOW_ALERT, HIDE_ALERT } from './../alertTypes';
+import { IWarningStateProps } from '../../components/interfaces/interfaces';
 
-interface IWarningStateProps {
-	children: any;
-}
-
-export type dispatchType = {
-	payload?: {
-		text: string;
-		type: string;
-	};
-};
+import { dispatchType } from '../../components/types/types';
 
 const WarningState: FC<IWarningStateProps> = (props: IWarningStateProps) => {
 	const [state, dispatch] = useReducer(warningReducer, { visible: false });

@@ -7,7 +7,6 @@ import './index.scss';
 ReactDOM.render(
   <WarningState>
     <App />
-  </WarningState>
-    ,
+  </WarningState>,
   document.getElementById('root')
 );
