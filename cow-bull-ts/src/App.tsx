@@ -18,9 +18,10 @@ import WarningContext from './context/warning/warningContext';
 //* TODO 1: refactor the form submission === DONE
 //* TODO 2: make win condition === DONE
 //* TODO 3 return moves increment === DONE
+//* !!! TODO 4: solve useEffect problem === DONE
+//* !!! TODO 5: Fix starting comparings after starting new game === DONE
 //~ TODO: refactor App component to FC
-//* !!! TODO: solve useEffect problem === DONE
-//!!! TODO: Fix starting comparings after starting new game
+//! TODO: Add styles
 //! TODO: Add hint system
 
 interface IAppState {
@@ -94,7 +95,7 @@ const App: FC = () => {
     }))
     .then(() => generateNumber())
     .then(() => warning.show("Game Started!", 'success'));
-  }, [generateNumber, warning]);
+  }, [data, generateNumber, warning]);
 
   const compareNumbers = useCallback(
     (): void => {
@@ -130,7 +131,7 @@ const App: FC = () => {
             warning.show("YOU WIN!", 'success');
           })
           .then(() => {
-            setTimeout(() => startNewGame(), 2000);
+            startNewGame();
           })      
           .then(() => {
             setData({
