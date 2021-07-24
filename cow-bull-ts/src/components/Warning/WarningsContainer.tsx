@@ -1,6 +1,6 @@
 // === default
 import React, { FC, useContext } from 'react';
-import WarningContext from '../../context/warning/warningContext';
+import { WarningContext } from 'context';
 
 const WarningsContainer: FC<{}> = () => {
 

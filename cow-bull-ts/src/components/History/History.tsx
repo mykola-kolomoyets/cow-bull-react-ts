@@ -1,5 +1,5 @@
 import React, {FC} from 'react'
-import { IHistoryProps } from '../interfaces/interfaces';
+import { IHistoryProps } from 'types/types';
 
 const History: FC<IHistoryProps> = (props: IHistoryProps) => {
 	const historyEls = props.history.map(({number, data}) => (

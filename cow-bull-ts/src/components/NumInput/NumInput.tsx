@@ -1,5 +1,5 @@
-import React, { FC, useState, useContext } from 'react';
-import { INumInputProps } from '../interfaces/interfaces';
+import React, { FC, useState } from 'react';
+import { INumInputProps } from 'types/types';
 
 const NumInput: FC<INumInputProps> = (props) => {
 	const [input, setInput] = useState<number>(0);

@@ -1,29 +1,24 @@
 // === default
-import React, { FC, useEffect, useState, useCallback, useContext } from 'react';
+import React, {
+	FC,
+	useEffect,
+	useState,
+	useCallback,
+	useContext
+} from 'react';
 
 // === components
-import Moves from './components/Moves/Moves';
-import NumInput from './components/NumInput/NumInput';
-import WarningsContainer from './components/Warning/WarningsContainer';
-import CowBulls from './components/CowBulls/CowBulls';
-import History from './components/History/History';
+import Moves from 'components/Moves';
+import NumInput from 'components/NumInput';
+import { WarningsContainer } from 'components/Warning';
+import History from 'components/History';
+import CowBulls from 'components/CowBulls';
 
 // === contexts
-import WarningContext from './context/warning/warningContext';
+import { WarningContext } from 'context';
 
-// === types
-import { historyItem } from './components/types/types';
-
-// === interfaces
-import { IAppState } from './components/interfaces/interfaces';
-
-
-//& comments description
-//* === DONE
-//~ === IN PROGRESS
-//! === TO DO
-//!!! === TO DO (VERY IMPORTANT)
-//^ === comment for code
+// === types & interfaces
+import { historyItem, IAppState } from 'types/types';
 
 //* TODO 1: refactor the form submission === DONE
 //* TODO 2: make win condition === DONE
@@ -31,9 +26,9 @@ import { IAppState } from './components/interfaces/interfaces';
 //* !!! TODO 4: solve useEffect problem === DONE
 //* !!! TODO 5: Fix starting comparisons after starting new game === DONE
 //* TODO 6: Add history of moves === DONE
-//~ TODO: refactor App component to FC
+//~ TODO: refactor Index component to FC
 //! TODO: Add styles
-//! TODO: Add hint system
+//! TODO: Add hint system (using createContext)
 
 const App: FC = () => {
 	const [data, setData] = useState<IAppState>({
@@ -47,44 +42,47 @@ const App: FC = () => {
 		incorrectNumbers: [],
 		history: [],
 	});
-
+	
 	const warning = useContext(WarningContext);
-
+	
 	//^ === state lifting up ===
 	const handleCallBack = async (childData: number): Promise<void> => {
 		await setData({ ...data, enteredNumber: childData });
 	};
-
+	
 	const generateNumber = useCallback((): void => {
 		let digits: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 		let arr: number[] = [];
-
+		
 		for (let i = 0; i < 4; i++) {
 			let index = Math.floor(Math.random() * digits.length);
 			if (i === 0 && index === 0) index++;
 			arr.push(digits[index]);
 			digits.splice(index, 1);
 		}
-
+		
 		setData({
 			...data,
 			currentNumber: +arr.join(''),
 			incorrectNumbers: digits,
 			enteredNumber: 0,
-			gameData: { cows: 0, bulls: 0 },
+			gameData: {
+				cows: 0,
+				bulls: 0
+			},
 			moves: 0,
 			history: [],
 		});
 	}, [data, setData]);
-
+	
 	const areRepeatedDigits = (n: number): boolean => /([0-9]).*?\1/.test(n.toString());
-
+	
 	const startNewGame = useCallback((): void => {
 		Promise.resolve()
 			.then(() => generateNumber())
 			.then(() => warning.show('New Game Started! Have a good luck!!', 'success'));
 	}, [generateNumber, warning]);
-
+	
 	const compareNumbers = useCallback((): void => {
 		//^ === [0] -> is 4 digits
 		//^ === [1] -> has repeated digits
@@ -95,13 +93,13 @@ const App: FC = () => {
 		} else {
 			criterions[0] = true;
 		}
-
+		
 		if (areRepeatedDigits(data.enteredNumber)) {
 			warningsTexts.push('The number has repeated digits');
 		} else {
 			criterions[1] = true;
 		}
-
+		
 		if (criterions.every((el) => el)) {
 			setData({
 				...data,
@@ -128,13 +126,12 @@ const App: FC = () => {
 						cows++;
 					}
 				}
-
+				
 				const newHistoryObj: historyItem = {
 					number: data.enteredNumber,
 					data: { cows, bulls },
 				};
-
-        
+				
 				setData({
 					...data,
 					gameData: {
@@ -142,14 +139,14 @@ const App: FC = () => {
 						bulls,
 					},
 				});
-
-        const historyNumbers = data.history.map(el => el.number);
-        if (data.history !== [] && !historyNumbers.includes(newHistoryObj.number)) {
-          setData({
-            ...data,
-            history: [...data.history, newHistoryObj],
-          })
-        }
+				
+				const historyNumbers = data.history.map(el => el.number);
+				if (data.history !== [] && !historyNumbers.includes(newHistoryObj.number)) {
+					setData({
+						...data,
+						history: [...data.history, newHistoryObj],
+					})
+				}
 			}
 		} else {
 			const resMessage = warningsTexts.join(' and ');
@@ -157,20 +154,20 @@ const App: FC = () => {
 			setData({ ...data, gameData: { cows: 0, bulls: 0 } });
 		}
 	}, [data, startNewGame, warning]);
-
+	
 	// componentDidMount
 	useEffect(() => {
 		console.log('effect-start');
 		generateNumber();
 		//eslint-disable-next-line
 	}, []);
-
+	
 	useEffect(() => {
 		console.log('effect-comparing');
 		if (data.enteredNumber !== 0) compareNumbers();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data.enteredNumber]);
-
+	
 	return (
 		<main className="container">
 			<h1>Cow-Bull game</h1>
