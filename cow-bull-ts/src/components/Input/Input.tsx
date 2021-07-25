@@ -38,6 +38,7 @@ const Input: FC<{}> = () => {
     event.preventDefault();
     warning.hide();
     dispatch(setEnteredNumber(event.currentTarget.nodeValue));
+    setValue("");
 
     const criterions = compareNumbers(enteredNumber);
     console.log(criterions);

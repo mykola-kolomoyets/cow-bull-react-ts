@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Input from 'components/Input';
 import { generateNumber } from 'utils';
+import Moves from 'components/Moves';
 import RestartGame from 'components/RestartGame';
 import CowBulls from 'components/CowBulls';
 import History from 'components/History';
@@ -14,6 +15,7 @@ import { useAppSelector ,useAppDispatch } from 'store/hooks';
 const App = () => {
   const {
     game: {
+      moves,
       gameData: {
         cows,
         bulls
@@ -35,6 +37,7 @@ const App = () => {
   return (
     <div className="App">
       <WarningContainer/>
+      <Moves moves={moves}/>
       <Input />
       <RestartGame />
       <CowBulls cows={cows} bulls={bulls} />
