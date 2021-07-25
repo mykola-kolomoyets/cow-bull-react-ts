@@ -1,6 +1,6 @@
 import React, {FC, useReducer} from 'react';
 import {WarningContext} from 'context';
-import {warningReducer} from './reducer';
+import warningReducer from './reducer';
 import {SHOW_ALERT, HIDE_ALERT} from 'utils';
 import {dispatchType, IWarningStateProps} from 'types/types';
 

@@ -1,20 +1,18 @@
 import { SHOW_ALERT, HIDE_ALERT } from 'utils';
+import {
+     ActionType, 
+     handleType
+    } from "types/types";
 
-const handlers = {
+const handlers: handleType = {
     [SHOW_ALERT]: (state: any, { payload }: any) => ({ ...payload, visible: true }),
     [HIDE_ALERT]: (state: any) => ({ ...state, visible: false }),
     DEFAULT: (state: any) => state
 }
 
-type actionType = {
-    type: keyof typeof handlers,
-    payload?: {
-        text: string,
-        type: string
-    }
-}
-
-export const warningReducer = (state: any, action: actionType) => {
+const warningReducer = (state: any, action: ActionType) => {
     const handle = handlers[action.type] || handlers.DEFAULT;
     return handle(state, action);
 }
+
+export default warningReducer;
