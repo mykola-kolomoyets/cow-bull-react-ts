@@ -1,25 +1,16 @@
+import { gameDataType } from 'types';
+import { useAppDispatch } from 'store/hooks';
 import { generateNumberReturnType } from "types";
+import { 
+    annulateState, 
+    setCurrentNumber,
+    setIncorrectNumbers
+} from 'store/game/gameSlice';
 
-const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+const SHOW_ALERT = "SHOW_ALERT";
+const HIDE_ALERT = "HIDE_ALERT";
 
-const generateNumber = (): generateNumberReturnType => {
-    const result: generateNumberReturnType = {
-        number: 0,
-        incorrectNumbers: []
-    };
-
-    const generator = numberGenerator();
-    for (let i = 0; i < 4; i++) {
-        result.number += generator.next().value;
-    }
-
-    result.incorrectNumbers = numbers
-    console.log(result);
-
-    return result;
-}
-
-function* numberGenerator(): IterableIterator<number> {
+function* numberGenerator(numbers: number[]): IterableIterator<number> {
     for (let i = 0; i <= 4; i++) {
         let index = Math.floor(Math.random() * numbers.length);
         (index === 0 && i === 0) && index++;
@@ -30,6 +21,64 @@ function* numberGenerator(): IterableIterator<number> {
     }
 }
 
+const generateNumber = (): generateNumberReturnType => {
+    const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const result: generateNumberReturnType = {
+        number: 0,
+        incorrectNumbers: []
+    };
+
+    const generator = numberGenerator(numbers);
+    for (let i = 0; i < 4; i++) {
+        result.number += generator.next().value;
+    }
+
+    result.incorrectNumbers = numbers;
+
+    return result;
+}
+
+const hasRepeatedDigits = (number: number): boolean => /([0-9]).*?\1/.test(number.toString());
+
+const StartNewGame = () => {
+    const dispatch = useAppDispatch();
+    dispatch(annulateState());
+    const {number, incorrectNumbers} = generateNumber();
+    dispatch(setCurrentNumber(number));
+    dispatch(setIncorrectNumbers(incorrectNumbers));
+}
+
+const compareNumbers = (num1: number): boolean[] => {
+    return [
+        num1.toString().length === 4,
+        !hasRepeatedDigits(num1)
+    ];
+}
+
+const getCowsBulls = (num1: number, num2: number): gameDataType => {
+    let result: gameDataType = {
+        cows: 0,
+        bulls: 0
+    }
+
+    const num1Arr = num1.toString().split('');
+    const num2Arr = num2.toString().split('');
+
+    for (let i = 0; i < 4; i++) {
+        if (num1Arr[i] === num2Arr[i]) result.bulls+=1;
+        if (num2Arr.includes(num1Arr[i])) result.cows+=1;
+    }
+
+    return result;
+}
+
+
+
 export {
-    generateNumber
+    SHOW_ALERT,
+    HIDE_ALERT,
+    generateNumber,
+    compareNumbers,
+    StartNewGame,
+    getCowsBulls
 }

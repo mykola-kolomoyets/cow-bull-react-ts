@@ -18,7 +18,7 @@ const gameSlice = createSlice({
 			state.incorrectNumbers = action.payload;
 		},
 		setCurrentNumber: (state, action) => {
-			state.currentNumber = action.payload.number;
+			state.currentNumber = action.payload;
 		},
 		addToHistory: (state, action) => {
 			state.history.push(action.payload);
@@ -56,7 +56,8 @@ export const {
 	setHints,
 	setIncorrectNumbers,
 	setEnteredNumber,
-	annulateState
+	annulateState,
+	setCurrentNumber
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

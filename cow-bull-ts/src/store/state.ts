@@ -1,6 +1,6 @@
-import { GameStateType } from 'types/types';
+import { gameStateType } from 'types';
 
-const GameState: GameStateType = {
+const GameState: gameStateType = {
 	moves: 0,
 	currentNumber: 0,
 	enteredNumber: 0,

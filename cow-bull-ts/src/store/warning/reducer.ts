@@ -2,7 +2,7 @@ import { SHOW_ALERT, HIDE_ALERT } from 'utils';
 import {
      ActionType, 
      handleType
-    } from "types/types";
+    } from "types";
 
 const handlers: handleType = {
     [SHOW_ALERT]: (state: any, { payload }: any) => ({ ...payload, visible: true }),

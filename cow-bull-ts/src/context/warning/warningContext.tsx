@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { IWarningContext } from 'types/types';
+import { IWarningContext } from 'types';
 
 const WarningContext = createContext({} as IWarningContext);
 

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { IWarningProps } from 'types/types';
+import { IWarningProps } from 'types';
 
 const Warning: FC<IWarningProps> = (props: IWarningProps) => {
 	return (

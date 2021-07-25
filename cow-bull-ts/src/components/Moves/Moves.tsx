@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import { IMovesProps } from 'types/types';
+import { IMovesProps } from 'types';
 
 
 const Moves: FC<IMovesProps> = (props: IMovesProps) => {

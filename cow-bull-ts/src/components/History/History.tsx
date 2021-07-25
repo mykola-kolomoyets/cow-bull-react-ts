@@ -1,19 +1,22 @@
-import React, {FC} from 'react'
-import { IHistoryProps } from 'types/types';
+import React from 'react'
+import { historyItemType } from 'types';
+import HistoryItem from './HistoryItem';
+import { useAppSelector } from 'store/hooks';
 
-const History: FC<IHistoryProps> = (props: IHistoryProps) => {
-	const historyEls = props.history.map(({number, data}) => (
-		<li key={number}>
-			<strong>{number}&nbsp;</strong>
-			<em>cows: {data.cows}</em>
-			<em>bulls: {data.bulls}</em>
-		</li>
-	));
+const History = () => {
+	const {
+		history
+	} = useAppSelector(state => state.game); 
+
+	const historyElements = history.map(({number, data}: historyItemType) => {
+		return <HistoryItem number={number} data={data}/>
+	})
+	
 	
 	return (
 		<section>
 			<ul>
-				{historyEls}
+				{historyElements}
 			</ul>
 		</section>
 	);
