@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/cow-bull-react-ts/static/css/main.f312cc33.chunk.css",
+    "main.js": "/cow-bull-react-ts/static/js/main.3cfad316.chunk.js",
+    "main.js.map": "/cow-bull-react-ts/static/js/main.3cfad316.chunk.js.map",
+    "runtime-main.js": "/cow-bull-react-ts/static/js/runtime-main.01c000c5.js",
+    "runtime-main.js.map": "/cow-bull-react-ts/static/js/runtime-main.01c000c5.js.map",
+    "static/js/2.9d5c6688.chunk.js": "/cow-bull-react-ts/static/js/2.9d5c6688.chunk.js",
+    "static/js/2.9d5c6688.chunk.js.map": "/cow-bull-react-ts/static/js/2.9d5c6688.chunk.js.map",
+    "index.html": "/cow-bull-react-ts/index.html",
+    "static/css/main.f312cc33.chunk.css.map": "/cow-bull-react-ts/static/css/main.f312cc33.chunk.css.map",
+    "static/js/2.9d5c6688.chunk.js.LICENSE.txt": "/cow-bull-react-ts/static/js/2.9d5c6688.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.01c000c5.js",
+    "static/js/2.9d5c6688.chunk.js",
+    "static/css/main.f312cc33.chunk.css",
+    "static/js/main.3cfad316.chunk.js"
+  ]
+}
