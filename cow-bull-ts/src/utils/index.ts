@@ -10,6 +10,12 @@ import {
 const SHOW_ALERT = "SHOW_ALERT";
 const HIDE_ALERT = "HIDE_ALERT";
 
+enum warningTypes {
+    warning = "yellow",
+    success = "green",
+    danger = "red"
+}
+
 function* numberGenerator(numbers: number[]): IterableIterator<number> {
     for (let i = 0; i <= 4; i++) {
         let index = Math.floor(Math.random() * numbers.length);
@@ -80,5 +86,6 @@ export {
     generateNumber,
     compareNumbers,
     StartNewGame,
-    getCowsBulls
+    getCowsBulls,
+    warningTypes
 }

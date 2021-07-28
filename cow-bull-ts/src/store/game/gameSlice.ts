@@ -9,7 +9,7 @@ const gameSlice = createSlice({
 			state.moves += 1;
 		},
 		setEnteredNumber: (state, action) => {
-			state.enteredNumber = action.payload;
+			state.enteredNumber = +action.payload;
 		},
 		setGameData: (state, action) => {
 			state.gameData = action.payload;
