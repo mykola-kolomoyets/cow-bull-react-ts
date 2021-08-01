@@ -20,6 +20,8 @@ import { historyItemType } from "types";
 
 import { useAppDispatch, useAppSelector } from "store/hooks";
 
+import styles from './Input.module.scss';
+
 const Input: FC<{}> = () => {
   const [value, setValue] = useState("");
   const warning = useContext(WarningContext);
@@ -71,29 +73,27 @@ const Input: FC<{}> = () => {
   };
 
   return (
-    <section>
+    <section className={styles.container}>
       <form
-        className="w-full max-w-sm"
+        className={styles.form}
         action="#"
         onSubmit={(event) => handleSubmit(event)}
       >
-        <div className="flex items-center border-b border-blue-500 py-2">
-          <input
-            className="appearance-none bg-transparent border-none w-full text-xl text-blue-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
-            type="text"
-            onChange={(event) => handleChange(event)}
-            value={value}
-            placeholder={"####"}
-            maxLength={4}
-          />
-          <button
-            className=" flex-shrink-0 bg-blue-500 hover:bg-blue-700 px-2 py-2 text-white font-bold border border-blue-700 rounded"
-            type="submit"
-          >
-            Check number
-          </button>
-          <RestartGame/>
-        </div>
+        <input
+          className={styles.input}
+          type="text"
+          onChange={(event) => handleChange(event)}
+          value={value}
+          placeholder={"####"}
+          maxLength={4}
+        />
+        <button
+          className={styles.submit}
+          type="submit"
+        >
+          Check number
+        </button>
+        <RestartGame/>
       </form>
     </section>
   );

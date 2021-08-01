@@ -1,12 +1,11 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import logger from 'redux-logger';
+import { configureStore } from '@reduxjs/toolkit';
 import gameReducer from 'store/game/gameSlice';
 
 export const store = configureStore({
   reducer: {
     game: gameReducer,
   },
-  middleware: [logger]
+  middleware: []
 });
 
 export type AppDispatch = typeof store.dispatch;

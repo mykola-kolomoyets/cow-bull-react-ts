@@ -1,0 +1,21 @@
+
+
+.wrapper {
+	position: relative;
+	width: 100vw;
+	height: calc(100vh - 2rem);
+	font-family: sans-serif;
+	padding-top: 2rem;
+}
+
+.container {
+	width: 34rem;
+	margin: 0 auto;
+	padding: 0 1.25rem;
+}
+
+@media screen and (max-width: 48rem) {
+	.container {
+		width: 100vw;
+	}
+}

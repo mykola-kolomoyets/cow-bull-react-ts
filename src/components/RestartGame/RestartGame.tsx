@@ -10,6 +10,8 @@ import { WarningContext } from "context";
 
 import { useAppDispatch } from "store/hooks";
 
+import styles from './RestartGame.module.scss';
+
 const RestartGame = () => {
   const warning = useContext(WarningContext);
   const dispatch = useAppDispatch();
@@ -22,10 +24,10 @@ const RestartGame = () => {
   };
   return (
     <button
-      className="flex-shrink-0 border-transparent border-4 text-blue-500 hover:text-blue-900 text-lg py-1 px-3 rounded"
+      className={styles.restart}
       onClick={handleClick}
     >
-      RestartGame
+      Restart game
     </button>
   );
 };

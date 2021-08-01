@@ -1,42 +1,27 @@
 {
   "compilerOptions": {
+    "target": "es5",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "outDir": "./dist",
-    "baseUrl": "./src",
-    "sourceMap": true,
-    "resolveJsonModule": true,
-    "declaration": false,
     "jsx": "react-jsx",
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "target": "ES2015",
-    "allowJs": true
+    "baseUrl": "src"
   },
   "include": [
-    "./src/**/*"
-  ],
-  "eslintConfig": {
-    "extends": ["react-app", "airbnb"],
-    "settings": {
-      "import/resolver": {
-        "node": {
-          "paths": ["src"]
-        }
-      }
-    }
-  },
+    "src/**/*"
+  ]
 }

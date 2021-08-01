@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import Input from 'components/Input';
 import { generateNumber } from 'utils';
 import Moves from 'components/Moves';
-import RestartGame from 'components/RestartGame';
 import CowBulls from 'components/CowBulls';
 import History from 'components/History';
 import Header from 'components/Header';
@@ -12,6 +11,7 @@ import {
   setIncorrectNumbers
 } from 'store/game/gameSlice';
 import { useAppSelector ,useAppDispatch } from 'store/hooks';
+import styles from './App.module.scss';
 
 const App = () => {
   const {
@@ -33,20 +33,19 @@ const App = () => {
 
     dispatch(setCurrentNumber(number));
     dispatch(setIncorrectNumbers(incorrectNumbers))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="sm:container sm:mx-auto my-auto mx-4-auto p-10 border-4 border-blue-500 box-border relative top-9 rounded">
-      <div className="w-96 flex-column mx-auto">
+    <div className={styles.wrapper}>
+      <div className={styles.container}>
         <Header />
         <WarningContainer />
         <Moves moves={moves}/>
         <Input />
-        {/* <RestartGame /> */}
         <CowBulls cows={cows} bulls={bulls} />
         <History/>
       </div>
-      
     </div>
   );
 }

@@ -1,8 +1,9 @@
 import React from 'react';
+import styles from './Header.module.scss';
 
 const Header = () => {
 	return (
-		<h1 className="text-4xl text-bold text-center mb-3">
+		<h1 className={styles.title}>
 			Cow-Bull Game
 		</h1>
 	)

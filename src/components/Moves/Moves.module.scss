@@ -1,0 +1,17 @@
+.moves {
+	position: relative;
+	width: 100%;
+	text-align: center;
+
+	.movesTitle {
+		font-size: 3rem;
+		position: relative;
+	}
+
+	.movesText {
+		font-weight: bold;
+		position: absolute;
+		top: .2rem;
+		margin-left: .5rem;
+	}
+}

@@ -1,13 +1,14 @@
 import React, {FC} from 'react';
 import { ICowBullsProps } from 'types';
+import styles from './CowBulls.module.scss';
 
 const CowBulls: FC<ICowBullsProps> = (props: ICowBullsProps) => {
 	const {cows, bulls} = props;
 
 	return (
-		<section className="w-36 flex mx-auto">
-			<p className="mx-auto text-md mx-3 my-2">Cows: {cows}</p>
-			<p className=" mx-auto text-md mx-3 my-2">Bulls: {bulls}</p>
+		<section className={styles.gameData}>
+			<p>🐄: {cows}</p>
+			<p>🐂: {bulls}</p>
 		</section>
 	);
 };
