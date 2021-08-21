@@ -72,7 +72,7 @@ const getCowsBulls = (num1: number, num2: number): gameDataType => {
 
     for (let i = 0; i < 4; i++) {
         if (num1Arr[i] === num2Arr[i]) result.bulls+=1;
-        if (num2Arr.includes(num1Arr[i])) result.cows+=1;
+        else if (num2Arr.includes(num1Arr[i])) result.cows+=1;
     }
 
     return result;

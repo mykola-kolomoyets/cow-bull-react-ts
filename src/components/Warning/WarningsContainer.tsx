@@ -1,6 +1,7 @@
 // === default
 import React, { FC, useContext } from 'react';
 import { WarningContext } from 'context';
+import './Warning.styles.scss'
 
 const WarningsContainer: FC<{}> = () => {
 
@@ -12,9 +13,9 @@ const WarningsContainer: FC<{}> = () => {
 
 	return (
 		<div
-		className={`alert-${type}`}
+		className={`alert alert-${type}`}
 		role="alert">
-			<p className="font-bold">WARNING!!</p>&nbsp;
+			<p><b>WARNING!!!</b></p>&nbsp;
 			{text}
 			<button 
 			onClick={hide} 

@@ -1,0 +1,46 @@
+.alert {
+	border-left: .5rem solid black;
+	border-radius: .5rem;
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	justify-content: center;
+	margin: 1rem 0;
+
+	&-yellow {
+		background-color: #ffc107;
+		border-color: #fd7e14;
+	}
+
+	&-green {
+		background-color: #20c997;
+		border-color: #198754;
+	}
+
+	p {
+		font-weight: 700;
+	}
+
+	.close {
+		cursor: pointer;
+		// display: block;
+		width: 3rem;
+		height: 3rem;
+		position: absolute;
+		right: 0.5rem;
+		padding: 0;
+		margin: 0;
+		border: none;
+		background-color: transparent;
+
+		svg {
+			margin-top: 0.1rem;
+			width: 1.75rem;
+			height: 1.75rem;
+			position: relative;
+		}
+	}
+
+	
+}
