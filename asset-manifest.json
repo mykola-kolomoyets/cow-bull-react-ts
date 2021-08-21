@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/cow-bull-ts/static/css/main.b1034383.chunk.css",
-    "main.js": "/cow-bull-ts/static/js/main.716c1af9.chunk.js",
-    "main.js.map": "/cow-bull-ts/static/js/main.716c1af9.chunk.js.map",
+    "main.css": "/cow-bull-ts/static/css/main.a5cea7c7.chunk.css",
+    "main.js": "/cow-bull-ts/static/js/main.7940946c.chunk.js",
+    "main.js.map": "/cow-bull-ts/static/js/main.7940946c.chunk.js.map",
     "runtime-main.js": "/cow-bull-ts/static/js/runtime-main.c095f64c.js",
     "runtime-main.js.map": "/cow-bull-ts/static/js/runtime-main.c095f64c.js.map",
     "static/css/2.f51861e4.chunk.css": "/cow-bull-ts/static/css/2.f51861e4.chunk.css",
@@ -10,14 +10,14 @@
     "static/js/2.95add34a.chunk.js.map": "/cow-bull-ts/static/js/2.95add34a.chunk.js.map",
     "index.html": "/cow-bull-ts/index.html",
     "static/css/2.f51861e4.chunk.css.map": "/cow-bull-ts/static/css/2.f51861e4.chunk.css.map",
-    "static/css/main.b1034383.chunk.css.map": "/cow-bull-ts/static/css/main.b1034383.chunk.css.map",
+    "static/css/main.a5cea7c7.chunk.css.map": "/cow-bull-ts/static/css/main.a5cea7c7.chunk.css.map",
     "static/js/2.95add34a.chunk.js.LICENSE.txt": "/cow-bull-ts/static/js/2.95add34a.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.c095f64c.js",
     "static/css/2.f51861e4.chunk.css",
     "static/js/2.95add34a.chunk.js",
-    "static/css/main.b1034383.chunk.css",
-    "static/js/main.716c1af9.chunk.js"
+    "static/css/main.a5cea7c7.chunk.css",
+    "static/js/main.7940946c.chunk.js"
   ]
 }
