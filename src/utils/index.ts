@@ -39,7 +39,9 @@ const generateNumber = (): generateNumberReturnType => {
         result.number += generator.next().value;
     }
 
-    result.incorrectNumbers = numbers;
+    numbers.sort(() => 0.5 - Math.random());
+
+    result.incorrectNumbers = [numbers[0], numbers[3]];
 
     return result;
 }

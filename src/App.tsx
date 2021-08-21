@@ -12,6 +12,7 @@ import {
 } from 'store/game/gameSlice';
 import { useAppSelector ,useAppDispatch } from 'store/hooks';
 import styles from './App.module.scss';
+import { Hint } from 'components/Hint';
 
 const App = () => {
   const {
@@ -43,6 +44,7 @@ const App = () => {
         <WarningContainer />
         <Moves moves={moves}/>
         <Input />
+        {(moves > 0 && !(moves % 5)) && <Hint/>}
         <CowBulls cows={cows} bulls={bulls} />
         <History/>
       </div>
