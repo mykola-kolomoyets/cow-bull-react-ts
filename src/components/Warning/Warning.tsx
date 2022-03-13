@@ -1,12 +1,6 @@
 import React, { FC } from 'react';
-import { IWarningProps } from 'types';
+import { WarningProps } from 'types';
 
-const Warning: FC<IWarningProps> = (props: IWarningProps) => {
-	return (
-		<>
-			<p>{props.text}</p>
-		</>
-	);
-};
+const Warning: FC<WarningProps> = ({ text }) => <p>{text}</p>;
 
 export default Warning;

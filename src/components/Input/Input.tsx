@@ -1,33 +1,39 @@
-import React, { FC, useState, useContext} from "react";
-import { WarningContext } from "context";
+import React, { useState, VFC } from "react";
+
 import {
   compareNumbers,
   StartNewGame,
   getCowsBulls,
   warningTypes,
 } from "utils";
-// import { useSelector, useDispatch } from 'react-redux';
+
 import {
   incrementMoves,
   setEnteredNumber,
   setGameData,
   addToHistory,
-} from "store/game/gameSlice";
+} from "store/game/slice";
+
+import { 
+  show as showWarning, 
+  hide as hideWarning 
+} from "store/warning/slice";
 
 import RestartGame from 'components/RestartGame';
 
-import { historyItemType } from "types";
+import { HistoryItem } from "types";
 
 import { useAppDispatch, useAppSelector } from "store/hooks";
 
 import styles from './Input.module.scss';
+import { batch } from "react-redux";
 
-const Input: FC<{}> = () => {
+const Input: VFC = () => {
   const [value, setValue] = useState("");
-  const warning = useContext(WarningContext);
   const { currentNumber, enteredNumber } = useAppSelector(
     (state) => state.game
   );
+
   const dispatch = useAppDispatch();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,40 +42,53 @@ const Input: FC<{}> = () => {
   };
 
   const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
-    if (value === "") return;
+    if (!value) return;
+
     event.preventDefault();
-    warning.hide();
-    dispatch(setEnteredNumber(event.currentTarget.nodeValue));
+
+    batch(() => {
+      dispatch(hideWarning());
+      dispatch(setEnteredNumber(event.currentTarget.nodeValue));
+    });
+
     setValue("");
 
     const criterions = compareNumbers(enteredNumber);
-    console.log(criterions);
 
     if (criterions[0] && criterions[1]) {
       dispatch(incrementMoves());
+
       if (enteredNumber === currentNumber) {
         Promise.resolve()
-          .then(() => warning.show("WOU WIN!!!", warningTypes.success))
+          .then(() => dispatch(showWarning({ text: "WOU WIN!!!", type: warningTypes.success })))
           .then(() => {
             setTimeout(() => StartNewGame(), 2000);
           });
-      } else {
-        const gameData = getCowsBulls(currentNumber, enteredNumber);
-
-        const currHistoryItem: historyItemType = {
-          number: enteredNumber,
-          data: gameData,
-        };
-        await dispatch(setGameData(gameData));
-        await dispatch(addToHistory(currHistoryItem));
+        return;
       }
-    } else {
-      let warnings = "";
-      if (!criterions[0]) warnings += "non 4-digit number ";
-      if (!criterions[0] && !criterions[1]) warnings += "and ";
-      if (!criterions[1]) warnings += "number has repeated digits";
-      warning.show(warnings, warningTypes.warning);
-    }
+
+      const gameData = getCowsBulls(currentNumber, enteredNumber);
+
+      const currHistoryItem: HistoryItem = {
+        number: enteredNumber,
+        data: gameData,
+      };
+
+      await batch(() => {
+        dispatch(setGameData(gameData));
+        dispatch(addToHistory(currHistoryItem));
+      });
+      
+      return;
+    } 
+
+    let warnings = "";
+
+    if (!criterions[0]) warnings += "non 4-digit number ";
+    if (!criterions[0] && !criterions[1]) warnings += "and ";
+    if (!criterions[1]) warnings += "number has repeated digits";
+
+    dispatch(showWarning({ text: warnings, type: warningTypes.warning }));
   };
 
   return (
@@ -87,12 +106,14 @@ const Input: FC<{}> = () => {
           placeholder={"####"}
           maxLength={4}
         />
+
         <button
           className={styles.submit}
           type="submit"
         >
           Check number
         </button>
+
         <RestartGame/>
       </form>
     </section>

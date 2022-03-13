@@ -1,31 +1,36 @@
-import React, { useContext } from "react";
+import React from "react";
+import { batch } from "react-redux";
 import { generateNumber, warningTypes } from "utils";
 import {
   annulateState,
   setCurrentNumber,
   setIncorrectNumbers,
-} from "store/game/gameSlice";
+} from "store/game/slice";
 
-import { WarningContext } from "context";
+import { show as showWarning } from "store/warning/slice";
 
 import { useAppDispatch } from "store/hooks";
 
 import styles from './RestartGame.module.scss';
 
 const RestartGame = () => {
-  const warning = useContext(WarningContext);
   const dispatch = useAppDispatch();
-  const handleClick = () => {
-    dispatch(annulateState());
+
+  const onClick = () => {
     const { number, incorrectNumbers } = generateNumber();
-    dispatch(setCurrentNumber(number));
-    dispatch(setIncorrectNumbers(incorrectNumbers));
-    warning.show("New game started", warningTypes.success);
+
+    batch(() => {
+      dispatch(annulateState());
+      dispatch(setCurrentNumber(number));
+      dispatch(setIncorrectNumbers(incorrectNumbers));
+      dispatch(showWarning({ text: "New game started", type: warningTypes.success }));
+    });
   };
+
   return (
     <button
       className={styles.restart}
-      onClick={handleClick}
+      onClick={onClick}
     >
       Restart game
     </button>

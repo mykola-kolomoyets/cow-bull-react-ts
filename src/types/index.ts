@@ -1,91 +1,102 @@
-export type dispatchType = {
+export type Dispatch = {
 	text: string;
 	type: string;
 }
 
-export type gameDataType = {
-	cows: number,
-	bulls: number
+export type GameData = {
+	cows: number;
+	bulls: number;
 }
 
 
-export type ActionType = {
-	type: string,
-	payload?: historyItemType | number | number[] | ICowBullsProps | dispatchType
+export type Action = {
+	type: string;
+	payload?: HistoryItem | number | number[] | CowBullsProps | Dispatch | WarningPayload;
 }
 
-export type gameStateType = {
-	moves: number,
-	currentNumber: number,
-	enteredNumber: number,
-	gameData: gameDataType,
-	incorrectNumbers: number[],
-	hints: number[],
-	history: historyItemType[]
+export type GameState = {
+	moves: number;
+	currentNumber: number;
+	enteredNumber: number;
+	gameData: GameData;
+	incorrectNumbers: number[];
+	hints: number[];
+	history: HistoryItem[];
 };
 
-export type historyItemType = {
-	number: number,
-	data: gameDataType
+export type HistoryItem = {
+	number: number;
+	data: GameData;
 }
 
-export type generateNumberReturnType = {
-	number: number,
-	incorrectNumbers: number[]
+export type GenerateNumberReturn = {
+	number: number;
+	incorrectNumbers: number[];
 }
 
-export type handleType = {
+export type Handler = {
 	[key: string]: (
 			state: any,
 			{payload}?: any
 	) => any 
 }
 
-export type ReducerType = (
+export type Reducer = (
 	state: any,
-	action: ActionType
-) => handleType
+	action: Action
+) => Handler
 
-export interface IAppState {
-	moves: number
-	currentNumber: number
-	enteredNumber: number
+export type AppState = {
+	moves: number;
+	currentNumber: number;
+	enteredNumber: number;
 	gameData: {
-			cows: number
-			bulls: number
+			cows: number;
+			bulls: number;
 	}
-	incorrectNumbers: number[],
-	history: historyItemType[]
+	incorrectNumbers: number[];
+	history: HistoryItem[];
 }
 
-export interface IHistoryProps {
-	history: historyItemType[]
+export type HistoryProps = {
+	history: HistoryItem[];
 }
 
-export interface IWarningStateProps {
+export type WarningStateProps = {
 	children: any;
 }
 
-export interface IWarningContext {
-	show: (text: string, type?: string | undefined, payload?: dispatchType) => void,
-	hide: () => void,
-	warning: any
+export enum WarningType {
+	warning = 'warning',
+	error = 'error',
+	success = 'success',
 }
 
-export interface ICowBullsProps {
-	cows: number,
-	bulls: number
+export type WarningState = {
+	text: string;
+	isShown: boolean;
+	type: WarningType;
 }
 
-export interface IMovesProps {
-	moves: number
+export type WarningPayload = {
+	text?: string;
+	type?: WarningType;
 }
 
-export interface INumInputProps {
+export type CowBullsProps = {
+	cows: number;
+	bulls: number;
+}
+
+export type MovesProps = {
+	moves: number;
+}
+
+export type NumInputProps = {
 	parentCallBack: (childData: number) => void;
-	number: number
+	number: number;
 }
 
-export interface IWarningProps {
-	text: string
+export type WarningProps = {
+	text: string;
 }

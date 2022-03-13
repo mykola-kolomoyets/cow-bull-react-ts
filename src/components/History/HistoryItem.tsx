@@ -1,20 +1,20 @@
 import React, { FC } from 'react';
-import { historyItemType } from 'types';
+import { HistoryItem } from 'types';
 
 import styles from './History.module.scss';
 
-const HistoryItem: FC<historyItemType> = (props: historyItemType) => {
-	const {number, data} = props;
+const HistoryItemComponent: FC<HistoryItem> = ({ number, data }) => {
 	return (
-		<li key={`${number}-${data.cows}-${data.bulls}`}
-				className={styles.item}>
+		<li key={`${number}-${data.cows}-${data.bulls}`} className={styles.item}>
 	 		<strong className={styles.number}>{number}</strong>
+
 			 <div className={styles.data}>
-					<p>🐄: {data.cows} &nbsp;</p>
-					<p>🐂: {data.bulls}</p>
+				<p>🐄: {data.cows} &nbsp;</p>
+				
+				<p>🐂: {data.bulls}</p>
 			 </div>
 	 	</li>
 	)
 }
 
-export default HistoryItem;
+export default HistoryItemComponent;

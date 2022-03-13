@@ -1,11 +1,11 @@
-import { gameDataType } from 'types';
+import { GameData } from 'types';
 import { useAppDispatch } from 'store/hooks';
-import { generateNumberReturnType } from "types";
+import { GenerateNumberReturn } from "types";
 import { 
     annulateState, 
     setCurrentNumber,
     setIncorrectNumbers
-} from 'store/game/gameSlice';
+} from 'store/game/slice';
 
 const SHOW_ALERT = "SHOW_ALERT";
 const HIDE_ALERT = "HIDE_ALERT";
@@ -27,9 +27,9 @@ function* numberGenerator(numbers: number[]): IterableIterator<number> {
     }
 }
 
-const generateNumber = (): generateNumberReturnType => {
+const generateNumber = (): GenerateNumberReturn => {
     const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    const result: generateNumberReturnType = {
+    const result: GenerateNumberReturn = {
         number: 0,
         incorrectNumbers: []
     };
@@ -63,8 +63,8 @@ const compareNumbers = (num1: number): boolean[] => {
     ];
 }
 
-const getCowsBulls = (num1: number, num2: number): gameDataType => {
-    let result: gameDataType = {
+const getCowsBulls = (num1: number, num2: number): GameData => {
+    let result: GameData = {
         cows: 0,
         bulls: 0
     }

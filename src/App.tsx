@@ -9,7 +9,7 @@ import WarningContainer from 'components/Warning/WarningsContainer';
 import {
   setCurrentNumber,
   setIncorrectNumbers
-} from 'store/game/gameSlice';
+} from 'store/game/slice';
 import { useAppSelector ,useAppDispatch } from 'store/hooks';
 import styles from './App.module.scss';
 import { Hint } from 'components/Hint';

@@ -1,6 +1,6 @@
-import { gameStateType } from 'types';
+import { GameState } from 'types';
 
-const GameState: gameStateType = {
+const GameState: GameState = {
 	moves: 0,
 	currentNumber: 0,
 	enteredNumber: 0,
@@ -10,7 +10,7 @@ const GameState: gameStateType = {
 	},
 	incorrectNumbers: [],
 	history: [],
-	hints: [],
+	hints: []
 }
 
 export { GameState };
