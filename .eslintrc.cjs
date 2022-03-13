@@ -30,6 +30,9 @@ module.exports = {
     'quote-props': ['error', 'as-needed'],
     '@typescript-eslint/quotes': ['error', 'single'],
     '@typescript-eslint/no-unused-vars': 'warn',
+    '@typescript-eslint/no-unused-expressions': ['off'],
+    'react/jsx-props-no-spreading': ['off'],
+    'react/jsx-filename-extension': ['off'],
     '@typescript-eslint/naming-convention': [
       'error',
       {
@@ -41,8 +44,6 @@ module.exports = {
     ],
     'comma-dangle': ['error', 'never'],
     '@typescript-eslint/comma-dangle': ['error', 'never'],
-    'react/jsx-props-no-spreading': ['error'],
-    'react/jsx-filename-extension': ['error'],
     'react/no-unescaped-entities': [0],
     'no-console': 'error',
     'react/require-default-props': [

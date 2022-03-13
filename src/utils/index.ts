@@ -1,8 +1,8 @@
 import { GameData } from 'types';
 import { useAppDispatch } from 'store/hooks';
 import { GenerateNumberReturn } from 'types';
-import { 
-  annulateState, 
+import {
+  annulateState,
   setCurrentNumber,
   setIncorrectNumbers
 } from 'store/game/slice';
@@ -19,10 +19,10 @@ enum warningTypes {
 function* numberGenerator(numbers: number[]): IterableIterator<number> {
   for (let i = 0; i <= 4; i++) {
     let index = Math.floor(Math.random() * numbers.length);
-    (index === 0 && i === 0) && index++;
+    index === 0 && i === 0 && index++;
     let result = numbers[index];
     numbers.splice(index, 1);
-    let multiplier = 10 ** (i);
+    let multiplier = 10 ** i;
     yield result * multiplier;
   }
 }
@@ -46,7 +46,8 @@ const generateNumber = (): GenerateNumberReturn => {
   return result;
 };
 
-const hasRepeatedDigits = (number: number): boolean => /([0-9]).*?\1/.test(number.toString());
+const hasRepeatedDigits = (number: number): boolean =>
+  /([0-9]).*?\1/.test(number.toString());
 
 const StartNewGame = () => {
   const dispatch = useAppDispatch();
@@ -57,10 +58,7 @@ const StartNewGame = () => {
 };
 
 const compareNumbers = (num1: number): boolean[] => {
-  return [
-    num1.toString().length === 4,
-    !hasRepeatedDigits(num1)
-  ];
+  return [num1.toString().length === 4, !hasRepeatedDigits(num1)];
 };
 
 const getCowsBulls = (num1: number, num2: number): GameData => {
@@ -79,8 +77,6 @@ const getCowsBulls = (num1: number, num2: number): GameData => {
 
   return result;
 };
-
-
 
 export {
   SHOW_ALERT,
