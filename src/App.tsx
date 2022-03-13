@@ -10,7 +10,7 @@ import {
   setCurrentNumber,
   setIncorrectNumbers
 } from 'store/game/slice';
-import { useAppSelector ,useAppDispatch } from 'store/hooks';
+import { useAppSelector, useAppDispatch } from 'store/hooks';
 import styles from './App.module.scss';
 import { Hint } from 'components/Hint';
 import { batch } from 'react-redux';
@@ -29,7 +29,7 @@ const App = () => {
 
     batch(() => {
       dispatch(setCurrentNumber(number));
-      dispatch(setIncorrectNumbers(incorrectNumbers))
+      dispatch(setIncorrectNumbers(incorrectNumbers));
     });
   }, [dispatch]);
 
@@ -46,6 +46,6 @@ const App = () => {
       </div>
     </div>
   );
-}
+};
 
 export default App;

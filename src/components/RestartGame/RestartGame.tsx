@@ -1,15 +1,15 @@
-import React from "react";
-import { batch } from "react-redux";
-import { generateNumber, warningTypes } from "utils";
+import React from 'react';
+import { batch } from 'react-redux';
+import { generateNumber, warningTypes } from 'utils';
 import {
   annulateState,
   setCurrentNumber,
-  setIncorrectNumbers,
-} from "store/game/slice";
+  setIncorrectNumbers
+} from 'store/game/slice';
 
-import { show as showWarning } from "store/warning/slice";
+import { show as showWarning } from 'store/warning/slice';
 
-import { useAppDispatch } from "store/hooks";
+import { useAppDispatch } from 'store/hooks';
 
 import styles from './RestartGame.module.scss';
 
@@ -23,7 +23,7 @@ const RestartGame = () => {
       dispatch(annulateState());
       dispatch(setCurrentNumber(number));
       dispatch(setIncorrectNumbers(incorrectNumbers));
-      dispatch(showWarning({ text: "New game started", type: warningTypes.success }));
+      dispatch(showWarning({ text: 'New game started', type: warningTypes.success }));
     });
   };
 

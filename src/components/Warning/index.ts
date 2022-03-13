@@ -1,7 +1,7 @@
-import Warning from "./Warning";
-import WarningsContainer from "./WarningsContainer";
+import Warning from './Warning';
+import WarningsContainer from './WarningsContainer';
 
 export {
-    Warning,
-    WarningsContainer
-}
+  Warning,
+  WarningsContainer
+};

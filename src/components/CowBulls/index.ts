@@ -1,3 +1,3 @@
-import CowBulls from "./CowBulls";
+import CowBulls from './CowBulls';
 
 export default CowBulls;

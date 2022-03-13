@@ -1,3 +1,3 @@
-import Moves from "./Moves";
+import Moves from './Moves';
 
 export default Moves;

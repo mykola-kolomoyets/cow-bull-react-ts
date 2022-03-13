@@ -1,102 +1,102 @@
 export type Dispatch = {
-	text: string;
-	type: string;
-}
+  text: string;
+  type: string;
+};
 
 export type GameData = {
-	cows: number;
-	bulls: number;
-}
+  cows: number;
+  bulls: number;
+};
 
 
 export type Action = {
-	type: string;
-	payload?: HistoryItem | number | number[] | CowBullsProps | Dispatch | WarningPayload;
-}
+  type: string;
+  payload?: HistoryItem | number | number[] | CowBullsProps | Dispatch | WarningPayload;
+};
 
 export type GameState = {
-	moves: number;
-	currentNumber: number;
-	enteredNumber: number;
-	gameData: GameData;
-	incorrectNumbers: number[];
-	hints: number[];
-	history: HistoryItem[];
+  moves: number;
+  currentNumber: number;
+  enteredNumber: number;
+  gameData: GameData;
+  incorrectNumbers: number[];
+  hints: number[];
+  history: HistoryItem[];
 };
 
 export type HistoryItem = {
-	number: number;
-	data: GameData;
-}
+  number: number;
+  data: GameData;
+};
 
 export type GenerateNumberReturn = {
-	number: number;
-	incorrectNumbers: number[];
-}
+  number: number;
+  incorrectNumbers: number[];
+};
 
 export type Handler = {
-	[key: string]: (
-			state: any,
-			{payload}?: any
-	) => any 
-}
+  [key: string]: (
+    state: any,
+    { payload }?: any
+  ) => any 
+};
 
 export type Reducer = (
-	state: any,
-	action: Action
-) => Handler
+  state: any,
+  action: Action
+) => Handler;
 
 export type AppState = {
-	moves: number;
-	currentNumber: number;
-	enteredNumber: number;
-	gameData: {
-			cows: number;
-			bulls: number;
-	}
-	incorrectNumbers: number[];
-	history: HistoryItem[];
-}
+  moves: number;
+  currentNumber: number;
+  enteredNumber: number;
+  gameData: {
+    cows: number;
+    bulls: number;
+  }
+  incorrectNumbers: number[];
+  history: HistoryItem[];
+};
 
 export type HistoryProps = {
-	history: HistoryItem[];
-}
+  history: HistoryItem[];
+};
 
 export type WarningStateProps = {
-	children: any;
-}
+  children: any;
+};
 
 export enum WarningType {
-	warning = 'warning',
-	error = 'error',
-	success = 'success',
+  warning = 'warning',
+  error = 'error',
+  success = 'success'
 }
 
 export type WarningState = {
-	text: string;
-	isShown: boolean;
-	type: WarningType;
-}
+  text: string;
+  isShown: boolean;
+  type: WarningType;
+};
 
 export type WarningPayload = {
-	text?: string;
-	type?: WarningType;
-}
+  text?: string;
+  type?: WarningType;
+};
 
 export type CowBullsProps = {
-	cows: number;
-	bulls: number;
-}
+  cows: number;
+  bulls: number;
+};
 
 export type MovesProps = {
-	moves: number;
-}
+  moves: number;
+};
 
 export type NumInputProps = {
-	parentCallBack: (childData: number) => void;
-	number: number;
-}
+  parentCallBack: (childData: number) => void;
+  number: number;
+};
 
 export type WarningProps = {
-	text: string;
-}
+  text: string;
+};
