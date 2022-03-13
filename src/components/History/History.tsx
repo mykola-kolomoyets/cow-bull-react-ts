@@ -15,18 +15,26 @@ const History: VFC = () => {
 		return <HistoryItemComponent number={number} data={data}/>
 	}).reverse();
 	
-	return (
+	return historyElements?.length ?(
 		<section className={styles.history}>
 			<h2 className={styles.title}>History</h2>
-			
-			<ul className={styles.historyList}>
-				{historyElements.length ? 
-					historyElements : 
-					<span>You have nor entered the number</span> 
-				}
-			</ul>
+
+			<table className={styles.historyTable}>
+				<thead>
+					<tr>
+						<th>Number</th>
+						<th>Cows 🐄 </th>
+						<th>Bulls 🐂</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{ historyElements }
+				</tbody>
+			</table>
+
 		</section>
-	);
+	) : <span>You have not entered the number</span>  ;
 };
 
 export default History;

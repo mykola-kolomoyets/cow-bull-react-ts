@@ -42,7 +42,7 @@ const Input: VFC = () => {
   };
 
   const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
-    if (!value) return;
+    if (!value) return dispatch(showWarning({ text: "Enter the number!", type: warningTypes.danger }));;
 
     event.preventDefault();
 
@@ -64,6 +64,7 @@ const Input: VFC = () => {
           .then(() => {
             setTimeout(() => StartNewGame(), 2000);
           });
+
         return;
       }
 
@@ -78,7 +79,7 @@ const Input: VFC = () => {
         dispatch(setGameData(gameData));
         dispatch(addToHistory(currHistoryItem));
       });
-      
+
       return;
     } 
 

@@ -5,15 +5,21 @@ import styles from './History.module.scss';
 
 const HistoryItemComponent: FC<HistoryItem> = ({ number, data }) => {
 	return (
-		<li key={`${number}-${data.cows}-${data.bulls}`} className={styles.item}>
-	 		<strong className={styles.number}>{number}</strong>
+		<tr key={`${number}-${data.cows}-${data.bulls}`} className={styles.item}>
+	 		<td className={styles.number}>{number}</td>
 
-			 <div className={styles.data}>
-				<p>🐄: {data.cows} &nbsp;</p>
-				
-				<p>🐂: {data.bulls}</p>
-			 </div>
-	 	</li>
+			 {/* <td className={styles.data}> */}
+			 <td>
+				<p>{data.cows} &nbsp;</p>
+
+			 </td>
+			 <td>
+				<p>{data.bulls}</p>
+
+			 </td>
+
+			 {/* </td> */}
+	 	</tr>
 	)
 }
 

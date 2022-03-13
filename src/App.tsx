@@ -13,17 +13,12 @@ import {
 import { useAppSelector ,useAppDispatch } from 'store/hooks';
 import styles from './App.module.scss';
 import { Hint } from 'components/Hint';
+import { batch } from 'react-redux';
 
 const App = () => {
-  const {
-    game: {
-      moves,
-      gameData: {
-        cows,
-        bulls
-      }
-    }
-  } = useAppSelector(state => state);
+  const { moves } = useAppSelector(state => state.game);
+  const { cows, bulls } = useAppSelector(state => state.game.gameData);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -32,10 +27,11 @@ const App = () => {
       incorrectNumbers
     } = generateNumber();
 
-    dispatch(setCurrentNumber(number));
-    dispatch(setIncorrectNumbers(incorrectNumbers))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    batch(() => {
+      dispatch(setCurrentNumber(number));
+      dispatch(setIncorrectNumbers(incorrectNumbers))
+    });
+  }, [dispatch]);
 
   return (
     <div className={styles.wrapper}>
