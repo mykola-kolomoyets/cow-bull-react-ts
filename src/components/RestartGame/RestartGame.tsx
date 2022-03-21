@@ -23,17 +23,18 @@ const RestartGame = () => {
       dispatch(annulateState());
       dispatch(setCurrentNumber(number));
       dispatch(setIncorrectNumbers(incorrectNumbers));
-      dispatch(showWarning({ text: 'New game started', type: warningTypes.success }));
+      dispatch(
+        showWarning({ text: 'New game started', type: warningTypes.success })
+      );
     });
   };
 
   return (
-    <button
-      className={styles.restart}
-      onClick={onClick}
-    >
-      Restart game
-    </button>
+    <section className={styles.restart}>
+      <button className={styles.restartButton} onClick={onClick}>
+        Restart game
+      </button>
+    </section>
   );
 };
 

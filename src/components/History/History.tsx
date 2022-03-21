@@ -1,20 +1,18 @@
-import React, { VFC } from 'react';
+import React, { useMemo, VFC } from 'react';
 
 import { useAppSelector } from 'store/hooks';
-
-import { HistoryItem } from 'types';
 
 import HistoryItemComponent from './HistoryItem';
 
 import styles from './History.module.scss';
 
 const History: VFC = () => {
-  const { history } = useAppSelector(state => state.game); 
+  const { history } = useAppSelector(state => state.game);
 
-  const historyElements = history.map(({ number, data }: HistoryItem) => {
-    return <HistoryItemComponent number={number} data={data}/>;
-  }).reverse();
-	
+  const historyElements = useMemo(() => history.map((props) => (
+    <HistoryItemComponent key={props.number} {...props}/>
+  )).reverse(), [history]);
+
   return historyElements?.length ? (
     <section className={styles.history}>
       <h2 className={styles.title}>History</h2>

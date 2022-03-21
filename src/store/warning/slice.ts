@@ -10,6 +10,7 @@ const warningSlice = createSlice({
   reducers: {
     show: (state, action) => {
       const { text, type } = (action.payload as WarningPayload);
+
       state.isShown = true;
       state.text = text!;
       state.type = type!;

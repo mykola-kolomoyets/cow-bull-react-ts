@@ -1,4 +1,5 @@
-import React, { useState, VFC } from 'react';
+import React, { VFC } from 'react';
+import { batch } from 'react-redux';
 
 import {
   compareNumbers,
@@ -13,49 +14,41 @@ import {
   setGameData,
   addToHistory
 } from 'store/game/slice';
-
 import { show as showWarning, hide as hideWarning } from 'store/warning/slice';
-
-import RestartGame from 'components/RestartGame';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 
 import { HistoryItem } from 'types';
 
-import { useAppDispatch, useAppSelector } from 'store/hooks';
+import RestartGame from 'components/RestartGame';
 
 import styles from './Input.module.scss';
-import { batch } from 'react-redux';
 
 const Input: VFC = () => {
-  const [value, setValue] = useState('');
-  const { currentNumber, enteredNumber } = useAppSelector(
-    (state) => state.game
-  );
+  const { currentNumber, enteredNumber } = useAppSelector(state => state.game);
 
   const dispatch = useAppDispatch();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
     dispatch(setEnteredNumber(event.target.value));
   };
 
   const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
-    if (!value)
+    if (event) event.preventDefault();
+
+    if (!enteredNumber) {
       return dispatch(
         showWarning({ text: 'Enter the number!', type: warningTypes.danger })
       );
-
-    event.preventDefault();
+    }
 
     batch(() => {
       dispatch(hideWarning());
       dispatch(setEnteredNumber(event.currentTarget.nodeValue));
     });
 
-    setValue('');
-
     const criterions = compareNumbers(enteredNumber);
 
-    if (criterions[0] && criterions[1]) {
+    if (criterions.is4Digit && criterions.hasUniqueDigits) {
       dispatch(incrementMoves());
 
       if (enteredNumber === currentNumber) {
@@ -89,9 +82,9 @@ const Input: VFC = () => {
 
     let warnings = '';
 
-    if (!criterions[0]) warnings += 'non 4-digit number ';
-    if (!criterions[0] && !criterions[1]) warnings += 'and ';
-    if (!criterions[1]) warnings += 'number has repeated digits';
+    if (!criterions.is4Digit) warnings += 'non 4-digit number ';
+    if (!criterions.is4Digit && !criterions.hasUniqueDigits) warnings += 'and ';
+    if (!criterions.hasUniqueDigits) warnings += 'number has repeated digits';
 
     dispatch(showWarning({ text: warnings, type: warningTypes.warning }));
   };
@@ -107,7 +100,7 @@ const Input: VFC = () => {
           className={styles.input}
           type="text"
           onChange={(event) => handleChange(event)}
-          value={value}
+          value={enteredNumber || ''}
           placeholder={'####'}
           maxLength={4}
         />
@@ -115,9 +108,8 @@ const Input: VFC = () => {
         <button className={styles.submit} type="submit">
           Check number
         </button>
-
-        <RestartGame />
       </form>
+      <RestartGame />
     </section>
   );
 };

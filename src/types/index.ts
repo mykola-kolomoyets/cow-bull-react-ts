@@ -8,6 +8,10 @@ export type GameData = {
   bulls: number;
 };
 
+export type Criterions = {
+  is4Digit: boolean;
+  hasUniqueDigits: boolean;
+};
 
 export type Action = {
   type: string;
@@ -38,7 +42,7 @@ export type Handler = {
   [key: string]: (
     state: any,
     { payload }?: any
-  ) => any 
+  ) => any
 };
 
 export type Reducer = (

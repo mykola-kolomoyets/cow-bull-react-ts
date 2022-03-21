@@ -1,6 +1,8 @@
-import { GameData } from 'types';
+import { batch } from 'react-redux';
+
+import { Criterions, GameData, GenerateNumberReturn } from 'types';
+
 import { useAppDispatch } from 'store/hooks';
-import { GenerateNumberReturn } from 'types';
 import {
   annulateState,
   setCurrentNumber,
@@ -19,22 +21,29 @@ enum warningTypes {
 function* numberGenerator(numbers: number[]): IterableIterator<number> {
   for (let i = 0; i <= 4; i++) {
     let index = Math.floor(Math.random() * numbers.length);
+
     index === 0 && i === 0 && index++;
-    let result = numbers[index];
+
+    const result = numbers[index];
+
     numbers.splice(index, 1);
-    let multiplier = 10 ** i;
+
+    const multiplier = 10 ** i;
+
     yield result * multiplier;
   }
 }
 
 const generateNumber = (): GenerateNumberReturn => {
-  const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const numbers = Array.from({ length: 10 }, (_, i)=> i);
+
   const result: GenerateNumberReturn = {
     number: 0,
     incorrectNumbers: []
   };
 
   const generator = numberGenerator(numbers);
+
   for (let i = 0; i < 4; i++) {
     result.number += generator.next().value;
   }
@@ -46,19 +55,26 @@ const generateNumber = (): GenerateNumberReturn => {
   return result;
 };
 
-const hasRepeatedDigits = (number: number): boolean =>
-  /([0-9]).*?\1/.test(number.toString());
+const hasRepeatedDigits = (number: number): boolean => /([0-9]).*?\1/.test(number.toString());
 
 const StartNewGame = () => {
   const dispatch = useAppDispatch();
+
   dispatch(annulateState());
+
   const { number, incorrectNumbers } = generateNumber();
-  dispatch(setCurrentNumber(number));
-  dispatch(setIncorrectNumbers(incorrectNumbers));
+
+  batch(() => {
+    dispatch(setCurrentNumber(number));
+    dispatch(setIncorrectNumbers(incorrectNumbers));
+  });
 };
 
-const compareNumbers = (num1: number): boolean[] => {
-  return [num1.toString().length === 4, !hasRepeatedDigits(num1)];
+const compareNumbers = (num1: number): Criterions => {
+  return {
+    is4Digit: num1.toString().length === 4,
+    hasUniqueDigits: !hasRepeatedDigits(num1)
+  };
 };
 
 const getCowsBulls = (num1: number, num2: number): GameData => {
@@ -67,8 +83,7 @@ const getCowsBulls = (num1: number, num2: number): GameData => {
     bulls: 0
   };
 
-  const num1Arr = num1.toString().split('');
-  const num2Arr = num2.toString().split('');
+  const [num1Arr, num2Arr] = [num1, num2].map(el => el.toString().split(''));
 
   for (let i = 0; i < 4; i++) {
     if (num1Arr[i] === num2Arr[i]) result.bulls += 1;
