@@ -2,12 +2,14 @@ import { batch } from 'react-redux';
 
 import { Criterions, GameData, GenerateNumberReturn } from 'types';
 
-import { useAppDispatch } from 'store/hooks';
+import { show as showWarning } from 'store/warning/slice';
+
 import {
   annulateState,
   setCurrentNumber,
   setIncorrectNumbers
 } from 'store/game/slice';
+import { AnyAction, Dispatch } from '@reduxjs/toolkit';
 
 const SHOW_ALERT = 'SHOW_ALERT';
 const HIDE_ALERT = 'HIDE_ALERT';
@@ -57,8 +59,7 @@ const generateNumber = (): GenerateNumberReturn => {
 
 const hasRepeatedDigits = (number: number): boolean => /([0-9]).*?\1/.test(number.toString());
 
-const StartNewGame = () => {
-  const dispatch = useAppDispatch();
+const StartNewGame = (dispatch: Dispatch<AnyAction>) => {
 
   dispatch(annulateState());
 
@@ -67,6 +68,9 @@ const StartNewGame = () => {
   batch(() => {
     dispatch(setCurrentNumber(number));
     dispatch(setIncorrectNumbers(incorrectNumbers));
+    dispatch(
+      showWarning({ text: 'New game started', type: warningTypes.success })
+    );
   });
 };
 

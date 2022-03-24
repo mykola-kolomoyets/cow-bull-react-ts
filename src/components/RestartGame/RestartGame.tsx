@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { VFC } from 'react';
 import { batch } from 'react-redux';
 import { generateNumber, warningTypes } from 'utils';
 import {
@@ -13,7 +13,7 @@ import { useAppDispatch } from 'store/hooks';
 
 import styles from './RestartGame.module.scss';
 
-const RestartGame = () => {
+const RestartGame: VFC = () => {
   const dispatch = useAppDispatch();
 
   const onClick = () => {

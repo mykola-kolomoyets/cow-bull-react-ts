@@ -22,6 +22,10 @@ const App = () => {
   useEffect(() => {
     const { number, incorrectNumbers } = generateNumber();
 
+    // eslint-disable-next-line no-console
+    console.log(number);
+
+
     batch(() => {
       dispatch(setCurrentNumber(number));
       dispatch(setIncorrectNumbers(incorrectNumbers));

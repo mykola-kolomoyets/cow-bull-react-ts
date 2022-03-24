@@ -59,7 +59,7 @@ const Input: VFC = () => {
             )
           )
           .then(() => {
-            setTimeout(() => StartNewGame(), 2000);
+            setTimeout(() => StartNewGame(dispatch), 2000);
           });
 
         return;
